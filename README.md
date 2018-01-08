@@ -1,0 +1,1 @@
+2018/1/5 Empty project build, The STM32 minimum MCU system complete with IAR 7.2.
