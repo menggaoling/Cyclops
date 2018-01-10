@@ -302,8 +302,11 @@
           <state>$PROJ_DIR$\Modules\STM32_Lib\CMSIS\CM3\DeviceSupport\ST\STM32F10x</state>
           <state>$PROJ_DIR$\Modules\STM32_Lib\STM32F10x_StdPeriph_Driver\inc</state>
           <state>$PROJ_DIR$\Modules\STM32_Lib</state>
-          <state>$PROJ_DIR$\Modules\HAL_Lib</state>
           <state>$PROJ_DIR$\APP</state>
+          <state>$PROJ_DIR$\Modules\HAL_Lib</state>
+          <state>$PROJ_DIR$\Modules\Csafe_Lib</state>
+          <state>$PROJ_DIR$\Modules\LCB_Lib</state>
+          <state>$PROJ_DIR$\Modules\MyeTV_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1899,9 +1902,30 @@
   <group>
     <name>Modules</name>
     <group>
+      <name>Csafe_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Csafe_Lib\C_safe.c</name>
+      </file>
+    </group>
+    <group>
       <name>HAL_Lib</name>
       <file>
-        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Lib.c</name>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_BSP.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Interface.c</name>
+      </file>
+    </group>
+    <group>
+      <name>LCB_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\LCB_Lib\Digital.c</name>
+      </file>
+    </group>
+    <group>
+      <name>MyeTV_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\MyeTV_Lib\TV.c</name>
       </file>
     </group>
     <group>

@@ -179,9 +179,30 @@
   <group>
     <name>Modules</name>
     <group>
+      <name>Csafe_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Csafe_Lib\C_safe.c</name>
+      </file>
+    </group>
+    <group>
       <name>HAL_Lib</name>
       <file>
-        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Lib.c</name>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_BSP.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Interface.c</name>
+      </file>
+    </group>
+    <group>
+      <name>LCB_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\LCB_Lib\Digital.c</name>
+      </file>
+    </group>
+    <group>
+      <name>MyeTV_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\MyeTV_Lib\TV.c</name>
       </file>
     </group>
     <group>
@@ -271,7 +292,7 @@
         </file>
       </group>
       <file>
-        <name>$PROJ_DIR$\Modules\STM32_LIB\stm32f10x_it.c</name>
+        <name>$PROJ_DIR$\Modules\STM32_Lib\stm32f10x_it.c</name>
       </file>
     </group>
   </group>

@@ -1,5 +1,4 @@
-#include "HAL_Lib.h"
-
+#include "HAL_BSP.h"
 
 /*******************************************************************************
 * Function Name  : NVIC_Configuration
@@ -65,72 +64,72 @@ void HAL_GPIO_Configuration(void)
 	GPIO_InitTypeDef 		GPIO_InitStructure;
         //EXTI_InitTypeDef 		EXTI_InitStructure;	
 
-//        
-//	/********************* Configure  UART *******************/
-//	/* Configure USART1 / USART2 Rx (PA.10/PA3) as input floating */
-//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_3;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOA, &GPIO_InitStructure);
-//        
-//	/* Configure USART1 / USART2 Tx (PA.09/PA2) as alternate function push-pull */
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_2;//;
-//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-//	GPIO_Init(GPIOA, &GPIO_InitStructure);
-//
-//        /* Configure USART3 Rx (PB11) as input floating */
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);
-//
-//	/* Configure USART3 Tx (PB10) as alternate function push-pull */
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);	
+        
+	/********************* Configure  UART *******************/
+	/* Configure USART1 / USART2 Rx (PA.10/PA3) as input floating */
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+        
+	/* Configure USART1 / USART2 Tx (PA.09/PA2) as alternate function push-pull */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_2;//;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+
+        /* Configure USART3 Rx (PB11) as input floating */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+	/* Configure USART3 Tx (PB10) as alternate function push-pull */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);	
 //        
 //        /* PORT D -> pin2:RF_RX */
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 //	GPIO_Init(GPIOD, &GPIO_InitStructure);
-//        /* 
-//           PORT C -> pin12:RF_TX 
-//                     pin10:TV_TX
-//        */
-//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_12;
-//        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-//        GPIO_Init(GPIOC, &GPIO_InitStructure);
-//        
-//        /* PORT C -> pin11:TV_RX */
-//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOC, &GPIO_InitStructure);
-//        
-//        /* ================================================================== */
-//        /*  PORT A  */
-//        /*
-//            pin0 :NC
-//            pin1 :DIR_485
-//            pin2 :UART2_TX 
-//            pin3 :UART2_RX 
-//            pin4 :EEPROM CS
-//            pin5 :EEPROM SK
-//            pin6 :EEPROM DO
-//            pin7 :EEPROM DI
-//            pin8 :USB_CTL1 x
-//            pin9 :USB_CTL2 x
-//            pin10:USB_CTL3 x
-//            pin11:USB_DM 
-//            pin12:USB_DP 
-//            pin13:TMS/SWDIO (JTAG)
-//            pin14:TCK/SWDIO (JTAG)
-//            pin15:TDI       (JTAG) 
-//        */
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7 |\
-//                                      GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 ;
-//        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//	GPIO_Init(GPIOA, &GPIO_InitStructure);	
+        /* 
+           PORT C -> pin12:RF_TX 
+                     pin10:TV_TX
+        */
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_12;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+        GPIO_Init(GPIOC, &GPIO_InitStructure);
+        
+        /* PORT C -> pin11:TV_RX */
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+        
+        /* ================================================================== */
+        /*  PORT A  */
+        /*
+            pin0 :NC
+            pin1 :DIR_485
+            pin2 :UART2_TX 
+            pin3 :UART2_RX 
+            pin4 :EEPROM CS
+            pin5 :EEPROM SK
+            pin6 :EEPROM DO
+            pin7 :EEPROM DI
+            pin8 :USB_CTL1 x
+            pin9 :USB_CTL2 x
+            pin10:USB_CTL3 x
+            pin11:USB_DM 
+            pin12:USB_DP 
+            pin13:TMS/SWDIO (JTAG)
+            pin14:TCK/SWDIO (JTAG)
+            pin15:TDI       (JTAG) 
+        */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 ;//| GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7 |\
+                                      GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 ;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);	
 //        
 //        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
@@ -270,28 +269,148 @@ void HAL_GPIO_Configuration(void)
            pin14 : POWER_EN2
            pin15 : POWER_EN3 
         */
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15 |GPIO_Pin_0 |GPIO_Pin_1 |GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);	
         
+        GPIO_SetBits(GPIOE,GPIO_Pin_0);
+        GPIO_SetBits(GPIOE,GPIO_Pin_1);
+        GPIO_SetBits(GPIOE,GPIO_Pin_2);
 
 }
 
+void  HAL_Usart_Initial(void)
+{
+	USART_InitTypeDef 	USART_InitStructure;
+	NVIC_InitTypeDef 	NVIC_InitStructure;
+        
+        //initial uart peripheral 
+        USART_DeInit(USART1) ;
+        USART_DeInit(USART2) ;
+        USART_DeInit(USART3) ;
+        USART_DeInit(UART4) ;
+        USART_DeInit(UART5) ;
+        
+        //USART_ClockInitTypeDef  USART_ClockInitStructure ;
+        /*######################################################################
+          #  UART 1 = IPOD 
+          #  UART 2 = Digital 
+          #  UART 3 = CSAFE 
+          #  UART 5 = RF / WiFi
+          ######################################################################*/     
+	USART_InitStructure.USART_BaudRate = 9600;//115200;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
 
+	/* Configure USART1,USART2,USART3 */
+	//USART_Init(USART1, &USART_InitStructure);
+	USART_Init(USART2, &USART_InitStructure);	
+        USART_Init(USART3, &USART_InitStructure);
+	//USART_Init(UART5, &USART_InitStructure);	
+	/* Enable USART1,USART2,USART3 Receive interrupt */
+	//USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);
+        USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+	//USART_ITConfig(UART5, USART_IT_RXNE, ENABLE);
 
-void Hal_System_Initial(void)
+	//USART_Cmd(USART1, ENABLE);	
+	USART_Cmd(USART2, ENABLE);	
+	USART_Cmd(USART3, ENABLE);	
+	//USART_Cmd(UART5, ENABLE);	
+        
+        /*######################################################################
+          #  UART 4 default  (TV control) 
+          ######################################################################*/        
+        USART_InitStructure.USART_BaudRate = 38400;//115200;
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+	/* Configure USART1 */
+        USART_Init(UART4, &USART_InitStructure);
+
+	/* Enable USART1 Receive interrupt */
+        //USART_ITConfig(USART4, USART_IT_RXNE, ENABLE);
+
+        USART_Cmd(UART4, ENABLE);	
+        
+        /*######################################################################
+          #  UART 5 = RF / WiFi
+          ######################################################################*/  
+        /*
+#ifdef  WiFi_Module
+	USART_InitStructure.USART_BaudRate = 115200;
+#else
+        USART_InitStructure.USART_BaudRate = 9600;
+#endif
+        
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+	// Configure USART5 
+	USART_Init(UART5, &USART_InitStructure);	
+	// Enable USART5 Receive interrupt 
+	USART_ITConfig(UART5, USART_IT_RXNE, ENABLE);
+#ifdef  WiFi_Module
+        USART_ITConfig(UART5,USART_IT_TC,ENABLE);
+#endif
+	USART_Cmd(UART5, ENABLE);	
+        */
+        /* Enable the USART1 Interrupt */
+        /*
+        NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);	
+        */ 
+	/* Enable the USART2 Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);	
+
+	/* Enable the USART3 Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2;// 2014.12.11
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);		
+        
+        /* Enable the USART4 Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;// 2014.12.11
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);		
+        
+        /* Enable the USART5 Interrupt */
+        /*
+	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);		
+        */
+        
+}
+
+void Hal_BSP_Initial(void)
 {
 //  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 //  TIM_OCInitTypeDef  TIM_OCInitStructure;
   //TIM_ICInitTypeDef  TIM_ICInitStructure;
   //ADC_InitTypeDef  ADC_InitStructure;
   
-  //initial uart peripheral 
-  USART_DeInit(USART1) ;
-  USART_DeInit(USART2) ;
-  USART_DeInit(USART3) ;
-  USART_DeInit(UART4) ;
-  USART_DeInit(UART5) ;
 
   /* System Clocks Configuration */
   SystemInit();
@@ -316,7 +435,7 @@ void Hal_System_Initial(void)
   //===============================================================================================================  
   
   
-
+  HAL_Usart_Initial();
   
 }
 
@@ -342,4 +461,70 @@ void HAL_Set_ERP_Power(INT8 mode)
     GPIO_ResetBits(GPIOE,GPIO_Pin_14);
     GPIO_ResetBits(GPIOE,GPIO_Pin_15);
   }
+}
+
+void Hal_Set_LCB_Serial_Dir(UINT8 direction)
+{
+  if( direction == TXD)
+  {
+    GPIO_SetBits(GPIOA,GPIO_Pin_1);
+  }
+  else if( direction == RXD)
+  {
+    GPIO_ResetBits(GPIOA,GPIO_Pin_1);
+  }
+}
+    
+void Hal_LCB_Serial_Send_Data(UINT8 data)
+{
+  USART_SendData(USART2,data);
+}
+
+UINT8 Hal_LCB_Serial_Receive_Data(void)
+{
+  return USART_ReceiveData(USART2);
+}
+
+void Hal_Set_LCB_Serial_Tx(void)
+{
+  Hal_Set_LCB_Serial_Dir(TXD);//==>封包设为输出
+  USART_ITConfig(USART2, USART_IT_TXE, ENABLE);//==>USART2中断打开
+  USART_ITConfig(USART2, USART_IT_RXNE,DISABLE);//==>USART2 RX中断关闭
+}
+void Hal_Set_LCB_Serial_Rx(void)
+{
+//  Hal_Set_LCB_Serial_Dir(RXD);//==>封包设为输入
+  USART_ITConfig(USART2,USART_IT_TXE,DISABLE);//==>USART2 TX中断关闭
+  USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);//==>USART2 RX中断打开
+}
+
+UINT8 Hal_Get_LCB_Serial_IntFlag(void)
+{
+  UINT8 ret = 0xff;
+  if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
+  {
+    /* Clear the USART2 transmit interrupt */
+    USART_ClearITPendingBit(USART2, USART_IT_TXE);
+    ret = TXD;
+  }
+  else if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) 
+  {
+    /* Clear the USART2 Receive interrupt */
+    USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    ret = RXD;
+  }
+  return ret;
+}
+
+UINT8 Hal_Get_LCB_Serial_SendComplete_Flag(void)
+{
+  UINT8 ret = FALSE;
+    if((USART2->SR & 0xc0)==0xc0)
+      //if((USART2->SR & 0x80)==0x80 && (USART2->SR & 0x40)==0x40)
+    {/* 0x80为 Bit7的TXE数据传输清空判断
+      0x40为 Bit6的TC数据传输完毕判断
+      判断以确保封包有传递完毕,再设为接收输入端 */
+      ret = TRUE;
+    }
+    return ret;
 }

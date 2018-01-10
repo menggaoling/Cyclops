@@ -8,9 +8,6 @@
 //#include <stdbool.h>        
 //#include <stdint.h>
 
-#include "stm32f10x_usart.h"
-#include "stm32f10x_rcc.h"
-#include "stm32f10x_tim.h"
 
 
 typedef signed   int        INT;
@@ -143,7 +140,8 @@ typedef union
 #endif
 #define OFF     (0)
 
-
+#define C_KM        1
+#define C_MILE      0
 
 
 typedef void (*FNCT_VOID) (void);

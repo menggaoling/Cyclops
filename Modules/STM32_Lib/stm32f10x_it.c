@@ -136,6 +136,24 @@ void LED_Blink(void);
 void SysTick_Handler(void)
 {
   LED_Blink();
+  
+  Digital_AutoReply();
+  
+  CSAFE_Counter_Int();
+  if(CSAFE_TXE_Status(1)==1)
+  {
+    CSAFE_TXE_Status(0);
+    USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
+  }
+  
+  TV_AutoReply();
+  if(TV_TXE_Status(1)==1)
+  {// Need open TX interrupt
+    TV_TXE_Status(0);
+    USART_ITConfig(UART4, USART_IT_TXE, ENABLE);
+  }
+  
+  
 }
 
 /******************************************************************************/
@@ -157,6 +175,84 @@ void SysTick_Handler(void)
 /**
   * @}
   */ 
+/*******************************************************************************
+* Function Name  : USART2_IRQHandler
+* Description    : This function handles USART2 global interrupt request.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void USART2_IRQHandler(void)
+{//==>485 communication
+//  if(LCB_Get_LowPower_State() != 1)// Sinkyo
+//  {
+      Digital_UartTxRx_Information();
+//      return;
+//  }
+//  USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+//  USART_ClearITPendingBit(USART2, USART_IT_TXE);
+//  USART_ClearITPendingBit(USART2, USART_IT_TC);
+//  USART_ITConfig(USART2, USART_IT_RXNE, DISABLE);
+//  USART_ITConfig(USART2, USART_IT_TXE, DISABLE);
+//  USART_ITConfig(USART2, USART_IT_TC, DISABLE);
+}
 
+
+/*******************************************************************************
+* Function Name  : USART3_IRQHandler
+* Description    : This function handles USART3 global interrupt request.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void USART3_IRQHandler(void)
+{
+  if(USART_GetITStatus(USART3, USART_IT_TXE) != RESET)
+  {// TX
+    USART_SendData(USART3,CSAFE_TxBuffer());// TX傳送Buffer資料
+    USART_ClearITPendingBit(USART3, USART_IT_TXE);
+    if(CSAFE_TxRx_Information(1) == 1)// TX
+    {
+      USART_ITConfig(USART3, USART_IT_TXE, DISABLE);
+    }
+  }
+  if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) 
+  {// RX
+    CSAFE_RxBuffer(USART_ReceiveData(USART3));// RX取資料至Buffer
+    USART_ClearITPendingBit(USART3, USART_IT_RXNE);
+    CSAFE_TxRx_Information(0); // RX
+  }
+  
+}
+
+/**
+  * @brief  This function handles UART4 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void UART4_IRQHandler(void)
+{
+  if(USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
+  {// TX
+    USART_SendData(UART4, TV_TxBuffer());// TX傳送Buffer資料
+    USART_ClearITPendingBit(UART4, USART_IT_TXE);
+    if(TV_UartTxRx_Information (1) == 1)// TX
+    {
+      USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+      USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);
+    }
+  }
+  if(USART_GetITStatus(UART4, USART_IT_RXNE) != RESET) 
+  {// RX
+    TV_RxBuffer(USART_ReceiveData(UART4));// RX取資料至Buffer
+    USART_ClearITPendingBit(UART4, USART_IT_RXNE);
+    if(TV_UartTxRx_Information (0) == 1) // RX
+    {
+      USART_ITConfig(UART4, USART_IT_RXNE, DISABLE);
+    }
+    
+  }
+  
+} 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
