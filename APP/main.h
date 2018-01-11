@@ -5,4 +5,5 @@
 #include "Digital.h"
 #include "C_safe.h"
 #include "TV.h"
+#include  "RFID_GATRM310.h"
 #endif //__MAIN_H  

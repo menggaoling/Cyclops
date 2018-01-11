@@ -307,6 +307,7 @@
           <state>$PROJ_DIR$\Modules\Csafe_Lib</state>
           <state>$PROJ_DIR$\Modules\LCB_Lib</state>
           <state>$PROJ_DIR$\Modules\MyeTV_Lib</state>
+          <state>$PROJ_DIR$\Modules\RFID_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1926,6 +1927,12 @@
       <name>MyeTV_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\MyeTV_Lib\TV.c</name>
+      </file>
+    </group>
+    <group>
+      <name>RFID_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\RFID_Lib\RFID_GATRM310.c</name>
       </file>
     </group>
     <group>

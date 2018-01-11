@@ -32,6 +32,7 @@
 #include "Digital.h"
 #include "C_safe.h"
 #include "TV.h"
+#include  "RFID_GATRM310.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

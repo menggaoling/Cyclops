@@ -137,8 +137,10 @@ void SysTick_Handler(void)
 {
   LED_Blink();
   
+  //LCB
   Digital_AutoReply();
   
+  //C_Safe
   CSAFE_Counter_Int();
   if(CSAFE_TXE_Status(1)==1)
   {
@@ -146,11 +148,26 @@ void SysTick_Handler(void)
     USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
   }
   
+  //MYE TV
   TV_AutoReply();
   if(TV_TXE_Status(1)==1)
   {// Need open TX interrupt
     TV_TXE_Status(0);
     USART_ITConfig(UART4, USART_IT_TXE, ENABLE);
+  }
+  
+  //RFID
+  if(RFID_GATRM310_Process())
+  {
+    USART_ITConfig(USART1,	USART_IT_RXNE, DISABLE);
+    USART_ITConfig(USART1,	USART_IT_TXE, DISABLE);
+    RFID_GATRM310_Initial();
+    USART_ITConfig(USART1,	USART_IT_RXNE, ENABLE);
+  }
+  if(RFID_TXE_Status (1)==1)
+  {// Need open TX interrupt
+    RFID_TXE_Status (0);
+    USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
   }
   
   
@@ -175,6 +192,39 @@ void SysTick_Handler(void)
 /**
   * @}
   */ 
+
+/*******************************************************************************
+* Function Name  : USART1_IRQHandler
+* Description    : This function handles USART1 global interrupt request.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void USART1_IRQHandler(void)
+{
+  if(USART_GetITStatus(USART1, USART_IT_TXE) != RESET)
+  {
+    // Receive
+    if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) 
+    {
+      RFID_RxBuffer(USART_ReceiveData(USART1));
+      /* Clear the Receive interrupt */
+      USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+      //
+    }
+    // Transmit
+    if(USART_GetITStatus(USART1, USART_IT_TXE) != RESET) 
+    {
+      /* Clear the Transmit interrupt */
+      USART_ClearITPendingBit(USART1, USART_IT_TXE);
+      USART_SendData(USART1, RFID_TxBuffer());
+      if(RFID_GATRM310_TxRxInterrupt(1) == 1)
+        USART_ITConfig(USART1, USART_IT_TXE, DISABLE);
+      //
+    }
+  }  
+}
+
 /*******************************************************************************
 * Function Name  : USART2_IRQHandler
 * Description    : This function handles USART2 global interrupt request.
@@ -249,10 +299,8 @@ void UART4_IRQHandler(void)
     if(TV_UartTxRx_Information (0) == 1) // RX
     {
       USART_ITConfig(UART4, USART_IT_RXNE, DISABLE);
-    }
-    
-  }
-  
+    }    
+  }  
 } 
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

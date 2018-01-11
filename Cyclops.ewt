@@ -206,6 +206,12 @@
       </file>
     </group>
     <group>
+      <name>RFID_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\RFID_Lib\RFID_GATRM310.c</name>
+      </file>
+    </group>
+    <group>
       <name>STM32_Lib</name>
       <group>
         <name>CMSIS</name>
