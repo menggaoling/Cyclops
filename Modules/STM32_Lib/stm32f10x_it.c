@@ -135,6 +135,7 @@ void PendSV_Handler(void)
 void LED_Blink(void);
 void SysTick_Handler(void)
 {
+  static UCHAR by_Time100ms = 0;
   LED_Blink();
   
   //LCB
@@ -170,6 +171,11 @@ void SysTick_Handler(void)
     USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
   }
   
+  if(by_Time100ms++ >= 100)
+  {
+    by_Time100ms = 0;
+    Timer_Flag_Int(); 
+  }
   
 }
 
@@ -234,9 +240,19 @@ void USART1_IRQHandler(void)
 *******************************************************************************/
 void USART2_IRQHandler(void)
 {//==>485 communication
+  if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
+  {
+    Digital_UartTx_Int();
+    USART_ClearITPendingBit(USART2, USART_IT_TXE);
+  }
+  if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) 
+  {
+    Digital_UartRx_Int();
+    USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+  }
 //  if(LCB_Get_LowPower_State() != 1)// Sinkyo
 //  {
-      Digital_UartTxRx_Information();
+//      Digital_UartTxRx_Information();
 //      return;
 //  }
 //  USART_ClearITPendingBit(USART2, USART_IT_RXNE);
@@ -303,4 +319,22 @@ void UART4_IRQHandler(void)
   }  
 } 
 
+/**
+  * @brief  This function handles UART5 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void UART5_IRQHandler(void)
+{
+  if(USART_GetITStatus(UART5, USART_IT_TXE) != RESET)
+  {// TX
+    USART_ClearITPendingBit(UART5, USART_IT_TXE);
+    Com_Tx_Int(); 
+  }
+  if(USART_GetITStatus(UART5, USART_IT_RXNE) != RESET) 
+  {// RX
+    USART_ClearITPendingBit(UART5, USART_IT_RXNE);
+    Com_Rx_Int();
+  }  
+} 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

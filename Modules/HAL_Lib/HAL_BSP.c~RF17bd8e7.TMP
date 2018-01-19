@@ -506,21 +506,33 @@ void Hal_Set_LCB_Serial_Rx(void)
   USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);//==>USART2 RX中断打开
 }
 
-
+UINT8 Hal_Get_LCB_Serial_IntFlag(void)
+{
+  UINT8 ret = 0xff;
+  if(USART_GetITStatus(USART2, USART_IT_TXE) != RESET)
+  {
+    /* Clear the USART2 transmit interrupt */
+    USART_ClearITPendingBit(USART2, USART_IT_TXE);
+    ret = TXD;
+  }
+  else if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) 
+  {
+    /* Clear the USART2 Receive interrupt */
+    USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+    ret = RXD;
+  }
+  return ret;
+}
 //UCB Communication Function
 void HAL_Com_Uart_Send_Data(UCHAR data)
 {
-    USART_SendData(UART5,data);
 }
 UCHAR HAL_Com_Uart_Receive_Data(void)
 {
-    return USART_ReceiveData(UART5);
 }
 void HAL_Com_TX_INT_Enable(void)
 {
-  USART_ITConfig(UART5, USART_IT_TXE, ENABLE);//==>USART2中断打开
 }
 void HAL_Com_TX_INT_Disable(void)
 {
-  USART_ITConfig(UART5,USART_IT_TXE,DISABLE);//==>USART2 TX中断关闭
 }

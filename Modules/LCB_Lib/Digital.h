@@ -3,6 +3,7 @@
 
 #include "LCB_Support.h"
 #include "HAL_Interface.h"
+#include "Treadmill.h"
 
 #define LCB_DCI      0xC0
 #define LCB_TopTek   0xC1
@@ -100,6 +101,8 @@ u8 Digital_InclineProtection(u8 by_Dat);// S003-01
 u8 Digital_GetStatus(void);// S003-01
 void Digital_Clear_ErrorCount(void);
 u16 Digital_GetMCB_Information(u8 by_D);
+void Digital_UartTx_Int(void);
+void Digital_UartRx_Int(void);
 //void Digital_CommunicationStart(u8 by_D);
 //u8 Digital_CommunicationSave(void);
 //u32 Digital_CommunicationTotal(u8 by_D);

@@ -308,6 +308,10 @@
           <state>$PROJ_DIR$\Modules\LCB_Lib</state>
           <state>$PROJ_DIR$\Modules\MyeTV_Lib</state>
           <state>$PROJ_DIR$\Modules\RFID_Lib</state>
+          <state>$PROJ_DIR$\Modules\UCB_Lib</state>
+          <state>$PROJ_DIR$\Modules\Timer_Lib</state>
+          <state>$PROJ_DIR$\Modules\Machine_Lib</state>
+          <state>$PROJ_DIR$\Modules\Program_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1909,6 +1913,12 @@
       </file>
     </group>
     <group>
+      <name>FAN_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\FAN_Lib\Fan.c</name>
+      </file>
+    </group>
+    <group>
       <name>HAL_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_BSP.c</name>
@@ -1922,11 +1932,29 @@
       <file>
         <name>$PROJ_DIR$\Modules\LCB_Lib\Digital.c</name>
       </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\LCB_Lib\LCB.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\Modules\LCB_Lib\LCB_Support.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Machine_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Machine_Lib\Treadmill.c</name>
+      </file>
     </group>
     <group>
       <name>MyeTV_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\MyeTV_Lib\TV.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Program_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Program_Lib\Formula.c</name>
       </file>
     </group>
     <group>
@@ -2023,6 +2051,18 @@
       </group>
       <file>
         <name>$PROJ_DIR$\Modules\STM32_Lib\stm32f10x_it.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Timer_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Timer_Lib\Timer.c</name>
+      </file>
+    </group>
+    <group>
+      <name>UCB_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\UCB_Lib\Communication.c</name>
       </file>
     </group>
   </group>

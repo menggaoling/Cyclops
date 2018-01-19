@@ -649,7 +649,7 @@ u8 Digital_Command(u8 by_Cmd,u32 by_Dat)// Sinkyo
                  TX_Buffer[_Buffer][5]=Digital_CRC8((u8*)TX_Buffer[_Buffer],5);
                  break;
         case CmdSetInclineLocation://  0xf6 //设定升降位置
- /*                if(Digital.Work)//==>如果不在工程模式的状况下
+                 if(Digital.Work)//==>如果不在工程模式的状况下
                  {
                      if(by_Dat==0)
                      {
@@ -674,64 +674,64 @@ u8 Digital_Command(u8 by_Cmd,u32 by_Dat)// Sinkyo
                          Digital.Command=1;//==>相同参数时就不做command的传输
                      }
                  }
-    */               
-//        case CmdSetMotorCounter:   //  0xf1 //设定马达转速
-//                 if(by_Cmd==CmdSetMotorCounter)
-//                 {
-//                     if(by_Dat != 0)
-//                     {
-//                         if(Digital.PowerOn04A0Pass == 0)
-//                         {// 解除 by Pass 动作
-//                             Digital.PowerOn04A0Pass = 1;
-//                         }
-//                         Console_SpeedRPM = by_Dat;// 仪表下的速度值
-//                         if(Console_SpeedUnit(Data_Get,0) == C_KM)
-//                         {
-//                             by_Dat = (u32)((float)by_Dat * 0.62137);
-//                         }
-//                         if(by_Dat < 50) by_Dat = 50;
-//                         /* =============================================>>
-//                         170 RPM : LowSpeed 0.5 mph
-//                         4070RPM : HighSpeed 12.0 mph
-//                         5112RPM : HighSpeed 15.0 mph
-//                         LowSpeed  : 50
-//                         HighSpeed : 1500 //1200
-//                         RPM = 170RPM + (((Speed - LowSpeed) * (5112RPM - 170RPM)) / (HighSpeed - LowSpeed))
-//                         <<============================================= */
-//                         //if(MachineType == LCB_DCI)
-//                         //    by_Dat = 170 + ((u32)((by_Dat - 50) * 4942) / 1450);
-//                         //else
-//                         //{
-//                             by_A = Console_RPM_Parameter(0,0,0);// Get MinRPM
-//                             by_B = Console_RPM_Parameter(0,1,0);// Get MaxRPM
-//                             by_Dat = by_A + ((u32)((by_Dat - 50) * by_B) / 1500);
-//                             //by_Dat = 178 + ((u32)((by_Dat - 50) * Console_Get_Parameter()) / 1450);
-//                         //}
-//                         if(_MotorStopTime == 0)
-//                         {// START
-//                             _MotorStopTime = 1;
-//                         }
-//                         
-//                     } 
-//                     else 
-//                     {// 回起速
-//                         _MotorStopTime = 0;
-//                         Console_SpeedRPM = Console_StartSpeed(Data_Get,0) * 10;
-//                     }
-//                     if(by_Dat > 5300)
-//                     {
-//                         Digital.Command=1;//==>不做command的传输
-//                     }
-//                 }
-//                 if(!Digital.Command)
-//                 {
-//                     TX_Buffer[_Buffer][2]=by_Cmd;
-//                     TX_Buffer[_Buffer][3]=2;   //==>data长度
-//                     TX_Buffer[_Buffer][4]=by_Dat/256;
-//                     TX_Buffer[_Buffer][5]=by_Dat%256;
-//                     TX_Buffer[_Buffer][6]=Digital_CRC8((u8*)TX_Buffer[_Buffer],6);
-//                 }
-//                 break;
+                   
+        case CmdSetMotorCounter:   //  0xf1 //设定马达转速
+                 if(by_Cmd==CmdSetMotorCounter)
+                 {
+                     if(by_Dat != 0)
+                     {
+                         if(Digital.PowerOn04A0Pass == 0)
+                         {// 解除 by Pass 动作
+                             Digital.PowerOn04A0Pass = 1;
+                         }
+                         Console_SpeedRPM = by_Dat;// 仪表下的速度值
+                         if(Console_SpeedUnit(Data_Get,0) == C_KM)
+                         {
+                             by_Dat = (u32)((float)by_Dat * 0.62137);
+                         }
+                         if(by_Dat < 50) by_Dat = 50;
+                         /* =============================================>>
+                         170 RPM : LowSpeed 0.5 mph
+                         4070RPM : HighSpeed 12.0 mph
+                         5112RPM : HighSpeed 15.0 mph
+                         LowSpeed  : 50
+                         HighSpeed : 1500 //1200
+                         RPM = 170RPM + (((Speed - LowSpeed) * (5112RPM - 170RPM)) / (HighSpeed - LowSpeed))
+                         <<============================================= */
+                         //if(MachineType == LCB_DCI)
+                         //    by_Dat = 170 + ((u32)((by_Dat - 50) * 4942) / 1450);
+                         //else
+                         //{
+                             by_A = Console_RPM_Parameter(0,0,0);// Get MinRPM
+                             by_B = Console_RPM_Parameter(0,1,0);// Get MaxRPM
+                             by_Dat = by_A + ((u32)((by_Dat - 50) * by_B) / 1500);
+                             //by_Dat = 178 + ((u32)((by_Dat - 50) * Console_Get_Parameter()) / 1450);
+                         //}
+                         if(_MotorStopTime == 0)
+                         {// START
+                             _MotorStopTime = 1;
+                         }
+                         
+                     } 
+                     else 
+                     {// 回起速
+                         _MotorStopTime = 0;
+                         Console_SpeedRPM = Console_StartSpeed(Data_Get,0) * 10;
+                     }
+                     if(by_Dat > 5300)
+                     {
+                         Digital.Command=1;//==>不做command的传输
+                     }
+                 }
+                 if(!Digital.Command)
+                 {
+                     TX_Buffer[_Buffer][2]=by_Cmd;
+                     TX_Buffer[_Buffer][3]=2;   //==>data长度
+                     TX_Buffer[_Buffer][4]=by_Dat/256;
+                     TX_Buffer[_Buffer][5]=by_Dat%256;
+                     TX_Buffer[_Buffer][6]=Digital_CRC8((u8*)TX_Buffer[_Buffer],6);
+                 }
+                 break;
         case CmdDCI_SetInclineRange://==>升降AD值范围设定 (10~240)   
                  /*
                  TX_Buffer[_Buffer][2]=by_Cmd;
@@ -759,11 +759,11 @@ u8 Digital_Command(u8 by_Cmd,u32 by_Dat)// Sinkyo
                  */
                  break; 
         case CmdEUPsMode: // Sinkyo
-//             Digital_Set_LCBEUPsState(0);     
-//             TX_Buffer[_Buffer][2]=by_Cmd;
-//             TX_Buffer[_Buffer][3]=1;   //==>data长度
-//             TX_Buffer[_Buffer][4]=by_Dat;
-//             TX_Buffer[_Buffer][5]=Digital_CRC8((u8*)TX_Buffer[_Buffer],5);
+             Digital_Set_LCBEUPsState(0);     
+             TX_Buffer[_Buffer][2]=by_Cmd;
+             TX_Buffer[_Buffer][3]=1;   //==>data长度
+             TX_Buffer[_Buffer][4]=by_Dat;
+             TX_Buffer[_Buffer][5]=Digital_CRC8((u8*)TX_Buffer[_Buffer],5);
              break;
         case CmdLCBDeviceData :  // Sinkyo 
             // LCB_Set_EEPromGetState(0);
@@ -928,19 +928,7 @@ void Digital_AutoReply(void)
       }
       else
       {
-          if(!Digital.RX_Return)//==>TX数据传输下
-          {
-              if(Hal_Get_LCB_Serial_SendComplete_Flag())
-              //if((USART2->SR & 0x80)==0x80 && (USART2->SR & 0x40)==0x40)
-              {/* 0x80为 Bit7的TXE数据传输清空判断
-                  0x40为 Bit6的TC数据传输完毕判断
-                  判断以确保封包有传递完毕,再设为接收输入端
-               */
-//                  Hal_Set_LCB_Serial_Dir(RXD);
-                Hal_Set_LCB_Serial_Rx();
-              }
-          }
-          else//==>数据接收中
+          if(Digital.RX_Return)//==>TX数据传输下
           {
               by_RX_ReturnTime++;
               if(by_RX_ReturnTime > 10)
@@ -982,9 +970,9 @@ void Digital_AutoReply(void)
   if(!Digital.CommandStart)
   {
       // Incline Target 014.07.04 
-//      Digital_InclineSafeFunctionCheck();
+      Digital_InclineSafeFunctionCheck();
       // Speed Target
-//      Digital_TargetSpeed_To_DigitalCommand();
+      Digital_TargetSpeed_To_DigitalCommand();
       //
       if(eSTOP_Time < eSTOP_DelayTime)
       {
@@ -1010,109 +998,111 @@ void Digital_AutoReply(void)
               Digital.Chang=0;
           }
       }
-//      if(by_SpeedInclineCheckDelay >= 1000)
-//      {//==>每1秒作一次
-//          by_SpeedInclineCheckDelay=0;
-//          if(!Digital.InsertSend)
-//          {//==>符合对应下控制器
-//              if(Console_WorkoutStatus(Data_Get,0) == 1 && by_CheckInUserTimeNumber != 0xff &&
-//                 Digital_GetMachineType() > LCB_TopTek )
-//              {//==>当机台是在运动且有打开侦测的情形下进行人员侦测动作
-//                  by_CheckInUserDelayTime++;
-//                  if(by_CheckInUserDelayTime >= 1)// 2
-//                  {//==> 每x秒下一次command
-//                      by_CheckInUserDelayTime = 0;
-//                      if(!Digital.Buffer_Over)
-//                      {
-//                          Digital_Command(CmdGetTreadmillInUsed,0);//==>人员侦测
-//                      }
-//                  }
-//                  if(by_CheckInUser == 0xff)//==>> 人员侦测功能
-//                  {//==> In Used (0xff)
-//                      by_NonInUserTime = 0;
-//                      Digital_CeckNonInUser = 0;
-//                  }
-//                  else if(by_CheckInUser == 0x55)
-//                  {//==> Non Used (0x55)
-//                      by_NonInUserTime++;
-//                      if(by_NonInUserTime >= by_CheckInUserTimeNumber - by_InUserModeMotoSafeTime)
-//                      {//==>持续 x 秒后就确认无人
-//                          Digital_CeckNonInUser = 1;
-//                      }
-//                  }
-//              }
-//              else
-//              {
-//                  by_InUserModeMotoSafeTime = InUserMotoCheckTime;// 马达稳定时间
-//                  by_NonInUserTime = 0;
-//                  by_CheckInUserDelayTime = 0;
-//                  Digital_CeckNonInUser = 0;
-//              }
-//              if(!Digital.Buffer_Over)
-//              {
-//                  Digital_Command(CmdGetMainMotorInformation,0);//==>下控信息取得
-//              }
-//          }
-//          // 马达相关动作确认确认 ==>>
-//          Digital_MotorFunctionCheck();
-//          // <<======
-//      }   
-//      else by_SpeedInclineCheckDelay++;
+      if(by_SpeedInclineCheckDelay >= 1000)
+      {//==>每1秒作一次
+          by_SpeedInclineCheckDelay=0;
+          if(!Digital.InsertSend)
+          {//==>符合对应下控制器
+              if(Console_WorkoutStatus(Data_Get,0) == 1 && by_CheckInUserTimeNumber != 0xff &&
+                 Digital_GetMachineType() > LCB_TopTek )
+              {//==>当机台是在运动且有打开侦测的情形下进行人员侦测动作
+                  by_CheckInUserDelayTime++;
+                  if(by_CheckInUserDelayTime >= 1)// 2
+                  {//==> 每x秒下一次command
+                      by_CheckInUserDelayTime = 0;
+                      if(!Digital.Buffer_Over)
+                      {
+                          Digital_Command(CmdGetTreadmillInUsed,0);//==>人员侦测
+                      }
+                  }
+                  if(by_CheckInUser == 0xff)//==>> 人员侦测功能
+                  {//==> In Used (0xff)
+                      by_NonInUserTime = 0;
+                      Digital_CeckNonInUser = 0;
+                  }
+                  else if(by_CheckInUser == 0x55)
+                  {//==> Non Used (0x55)
+                      by_NonInUserTime++;
+                      if(by_NonInUserTime >= by_CheckInUserTimeNumber - by_InUserModeMotoSafeTime)
+                      {//==>持续 x 秒后就确认无人
+                          Digital_CeckNonInUser = 1;
+                      }
+                  }
+              }
+              else
+              {
+                  by_InUserModeMotoSafeTime = InUserMotoCheckTime;// 马达稳定时间
+                  by_NonInUserTime = 0;
+                  by_CheckInUserDelayTime = 0;
+                  Digital_CeckNonInUser = 0;
+              }
+              if(!Digital.Buffer_Over)
+              {
+                  Digital_Command(CmdGetMainMotorInformation,0);//==>下控信息取得
+              }
+          }
+          // 马达相关动作确认确认 ==>>
+          Digital_MotorFunctionCheck();
+          // <<======
+      }   
+      else by_SpeedInclineCheckDelay++;
       //
   }
   //
 }
 
 
-
-
-
-
 /*******************************************************************************
-* Function Name  : Digital_UartTxRx_Information()
-* Description    : 数字通讯 UART TX / RX 数据传输与接收 <放置在USART中断中使用>
+* Function Name  : Digital_UartTx_Int()
+* Description    : 数字通讯 UART TX  数据传输 <放置在USART中断中使用>
 * Input          : None
 * Output         : TX_Buffer[][] ; by_Command ; RX_Buffer[by_RX]
 * Return         : None
 *******************************************************************************/
-void Digital_UartTxRx_Information(void)
+void Digital_UartTx_Int(void)
 {
-    if(Hal_Get_LCB_Serial_IntFlag() == TXD)
-    {//==>判断是否发送中断
-    /* Write one byte to the transmit data register */
-        Hal_LCB_Serial_Send_Data(TX_Buffer[by_TX][by_TX_Byte]);
-
-        if(by_TX_Byte >= (4+TX_Buffer[by_TX][3]))
-        {
-            Digital.RX=1;
-            Digital.RX_Return=0;
-            by_TX_Byte=0;
-            by_RX_ReturnTime=0;
-            by_TX_ConnectDelay=0;
-            by_Command=TX_Buffer[by_TX][2];
-            /* Disable the USART2 Transmit interrupt */
-            Hal_Set_LCB_Serial_Rx();
-        }
-        else by_TX_Byte++;
-    }
-    if(Hal_Get_LCB_Serial_IntFlag() == RXD) 
-    {//==>判断是否接收中断
-        /* Read one byte from the receive data register */
-        RX_Buffer[by_RX] = Hal_LCB_Serial_Receive_Data();
-       
-        if(Digital.RX)
-        {
-            if(RX_Buffer[0] == 0x01)
-            {//==>当起始byte = 0x01时才会采纳后续的封包数据
-                by_RX++;
-            }
-            by_RX_ReturnTime=0;
-            by_TX_ConnectDelay=0;
-            Digital.RX_Return=1;
-        }
-
-    }
+  if(by_TX_Byte > (5+TX_Buffer[by_TX][3]))
+  {
+    Digital.RX=1;
+    Digital.RX_Return=0;
+    by_TX_Byte=0;
+    by_RX_ReturnTime=0;
+    by_TX_ConnectDelay=0;
+    by_Command=TX_Buffer[by_TX][2];
+    /* Disable the USART2 Transmit interrupt */
+    Hal_Set_LCB_Serial_Rx();
+  }
+  else 
+  {
+    Hal_LCB_Serial_Send_Data(TX_Buffer[by_TX][by_TX_Byte]);
+    by_TX_Byte++; 
+  }
 }
+/*******************************************************************************
+* Function Name  : Digital_UartTxRx_Information()
+* Description    : 数字通讯 UART RX 数据接收 <放置在USART中断中使用>
+* Input          : None
+* Output         : TX_Buffer[][] ; by_Command ; RX_Buffer[by_RX]
+* Return         : None
+*******************************************************************************/
+void Digital_UartRx_Int(void)
+{
+  /* Read one byte from the receive data register */
+  RX_Buffer[by_RX] = Hal_LCB_Serial_Receive_Data();
+  
+  if(Digital.RX)
+  {
+    if(RX_Buffer[0] == 0x01)
+    {//==>当起始byte = 0x01时才会采纳后续的封包数据
+      by_RX++;
+    }
+    by_RX_ReturnTime=0;
+    by_TX_ConnectDelay=0;
+    Digital.RX_Return=1;
+  }
+}
+
+
 
 
 /*******************************************************************************
@@ -1218,15 +1208,15 @@ void Digital_RX(void)
                      _CheckElevationCommandAD = by_ElevationOld;
                      break;
             case CmdEUPsMode:     
-//                     if(RX_Buffer[3] == 1)
-//                     {
-//                         if(RX_Buffer[4] != 0x01)
-//                            Digital_Set_LCBEUPsState(0xff);
-//                         else
-//                            Digital_Set_LCBEUPsState(RX_Buffer[4]);
-//                     }
-//                     else
-//                          Digital_Set_LCBEUPsState(0xff);
+                     if(RX_Buffer[3] == 1)
+                     {
+                         if(RX_Buffer[4] != 0x01)
+                            Digital_Set_LCBEUPsState(0xff);
+                         else
+                            Digital_Set_LCBEUPsState(RX_Buffer[4]);
+                     }
+                     else
+                          Digital_Set_LCBEUPsState(0xff);
                      break;     
           
             case CmdGetTreadmillInUsed:      // 0x95 
@@ -1358,13 +1348,13 @@ void Digital_RX(void)
         Digital_Command(CmdInitial,0);
         Digital_Command(CmdSetWorkStatus,0);
         Digital_Command(CmdSetWorkStatus,1);
-//        if(Digital.AutoCheck == 1 || Digtial_ElevationVariationCheck(0) == 1)
-//        {//==>当升降实际值与目标值误差正负,就清除之前所设定的目标值参数然后在重新取得
-//            by_ElevationOld=0;//==>先清除旧的AD暂存值
-//            //Console_Incline(Data_Set,0);
-//            Digital.Work=1;
-//            Console_Information(Info_WorkoutIncline,Data_Set,0);
-//        }
+        if(Digital.AutoCheck == 1 || Digtial_ElevationVariationCheck(0) == 1)
+        {//==>当升降实际值与目标值误差正负,就清除之前所设定的目标值参数然后在重新取得
+            by_ElevationOld=0;//==>先清除旧的AD暂存值
+            //Console_Incline(Data_Set,0);
+            Digital.Work=1;
+            Console_Information(Info_WorkoutIncline,Data_Set,0);
+        }
         Digital.AutoCheck = 0;  
     }
 }

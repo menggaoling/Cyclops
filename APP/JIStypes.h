@@ -7,7 +7,7 @@
 //#include <math.h>          
 //#include <stdbool.h>        
 //#include <stdint.h>
-
+#include  <string.h>
 
 
 typedef signed   int        INT;
