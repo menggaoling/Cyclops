@@ -312,6 +312,7 @@
           <state>$PROJ_DIR$\Modules\Timer_Lib</state>
           <state>$PROJ_DIR$\Modules\Machine_Lib</state>
           <state>$PROJ_DIR$\Modules\Program_Lib</state>
+          <state>$PROJ_DIR$\Modules\FAN_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>

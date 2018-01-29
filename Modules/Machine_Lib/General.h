@@ -10,7 +10,7 @@
 //#define BIT7      0x80
 
 //==>> 特殊功能机制开关 
-//#define _DebugClose //==>取消设定后其自我测试侦错时可关闭特定程序用
+#define _DebugClose //==>取消设定后其自我测试侦错时可关闭特定程序用
 #define _EUPs  //==> EUPs启动开关
 #define _TreadSense //==>人员侦测机制启动开关
 // <<======
@@ -463,7 +463,7 @@ extern const unsigned char Boot_Version[20] ;
 //=================================================================
 // Safe Key
 //=================================================================
-#define IO_SafeKey()          GPIO_ReadInputDataBit(GPIOD,GPIO_Pin_6)
+#define IO_SafeKey()          GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5)
 //=================================================================
 // Headphone Jack Sensor
 //=================================================================

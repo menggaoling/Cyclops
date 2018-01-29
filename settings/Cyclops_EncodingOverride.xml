@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<userOverrides>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\APP\main.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\HAL_Lib\HAL_Interface.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\LCB_Lib\Digital.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\LCB_Lib\LCB.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\Machine_Lib\Treadmill.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\UCB_Lib\Communication.c</path>
+    <encoding>System</encoding>
+  </override>
+</userOverrides>
+
+

@@ -138,6 +138,8 @@ void SysTick_Handler(void)
   static UCHAR by_Time100ms = 0;
   LED_Blink();
   
+  Console_SEC_Counter_Int();
+  
   //LCB
   Digital_AutoReply();
   
@@ -170,6 +172,8 @@ void SysTick_Handler(void)
     RFID_TXE_Status (0);
     USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
   }
+  
+  Fan_1ms_Int();
   
   if(by_Time100ms++ >= 100)
   {
@@ -337,4 +341,7 @@ void UART5_IRQHandler(void)
     Com_Rx_Int();
   }  
 } 
+
+
+
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

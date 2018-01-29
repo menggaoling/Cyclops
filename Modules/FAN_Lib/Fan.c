@@ -1,128 +1,94 @@
 #include "Fan.h"
 
 __no_init static USHORT by_Fan_Speed;
-static unsigned int by_3s = 0;
-static struct
-{
-    unsigned PROTECT_EN: 1;
-    unsigned PROTECTED: 1;
-} Fan;
+__no_init static USHORT by_Fan_Level;
+__no_init static USHORT RPM_Value;
+UCHAR Timer_Count;
 
 #define C_SPEED_NUM 3
-
 const USHORT w_Speed[4] = {0, FAN_SPEED_MIN, FAN_SPEED_MID, FAN_SPEED_MAX};
 
 
 void Fan_Initial_Data(void)
 {
-    Fan_Set_Speed(0);
-    Fan.PROTECT_EN = 0;
-    Fan.PROTECTED = 0;
+  by_Fan_Speed = 0;
+  by_Fan_Level = 0;
+  RPM_Value = 0;
+  Timer_Count = 0;
+  Fan_Set_Level(by_Fan_Level);
 }
 
-void Fan_Set_Level(unsigned by_Level)
+void Fan_Set_Level(UCHAR by_Level)
 {
-//    static unsigned int by_Current = 0;
-//
-//    if ((by_Level > 0) && (by_Level < 4))
-//    {
-//        TIMER_CompareBufSet(FAN_TIMER, FAN_CCP, w_Speed[by_Level]);
-//        FAN_IO_Sel_High();
-//    }
-//    else
-//    {
-//        TIMER_CompareBufSet(FAN_TIMER, FAN_CCP, 0);
-//        FAN_IO_Sel_Low();
-//    }
-//    if (by_Current != TIMER_CompareBufGet(FAN_TIMER, FAN_CCP))
-//    {
-//        by_Current =  TIMER_CompareBufGet(FAN_TIMER, FAN_CCP);
-//        if (by_Current == 0)
-//        {
-//            FAN_IO_Sel_Low();
-//        }
-//        else
-//        {
-//            FAN_IO_Sel_High();
-//        }
-//    }
-}
 
-void Fan_Inc_Speed(void)
-{
-    //if(Fan.PROTECTED) return;
-    if (by_Fan_Speed < C_SPEED_NUM)
+    if ((by_Level > 0) && (by_Level < 4))
     {
-        by_Fan_Speed++;
+        HAL_Set_Fan_Duty(w_Speed[by_Level]);
     }
     else
     {
-        by_Fan_Speed = 0;
+        HAL_Set_Fan_Duty(0);
     }
-    Fan_Set_Speed(by_Fan_Speed);
+}
+
+void Fan_Inc_Level(void)
+{
+    if (by_Fan_Level < C_SPEED_NUM)
+    {
+        by_Fan_Level++;
+    }
+    else
+    {
+        by_Fan_Level = 0;
+    }
+    Fan_Set_Level(by_Fan_Level);
 }
 
 /*--------------------------------------------*/
-void Fan_Dec_Speed(void)
+void Fan_Dec_Level(void)
 {
-    //if(Fan.PROTECTED) return;
-    if (by_Fan_Speed > 0)
+    if (by_Fan_Level > 0)
     {
-        by_Fan_Speed--;
+        by_Fan_Level--;
     }
     else
     {
-        by_Fan_Speed = C_SPEED_NUM;
+        by_Fan_Level = C_SPEED_NUM;
     }
-    Fan_Set_Speed(by_Fan_Speed);
+    Fan_Set_Level(by_Fan_Level);
 }
 
-void Fan_Set_Speed(unsigned char by_Dat)
+void Fan_Set_Speed(USHORT by_Dat)
 {
-    by_Fan_Speed = by_Dat;
+  if(by_Dat < FAN_TIMER_TOP)
+    HAL_Set_Fan_Duty(by_Dat);
 }
 
 
-unsigned char Fan_Get_Speed(void)
+USHORT Fan_Get_Speed(void)
 {
     return (by_Fan_Speed);
 }
 
-void Fan_ProtectFun_Set(unsigned char by_Enable)
+void Fan_1ms_Int(void)
 {
-    if (by_Enable == 0)
+  USHORT Temp_Value;
+  if(Timer_Count >= 100)//100mS interrupt
+  {
+    Timer_Count=0;
+    Temp_Value = HAL_Fan_TIM_GetCounter()*FAN_PARAMETER;
+    if(RPM_Value > Temp_Value)
     {
-        Fan.PROTECT_EN = 0;
+      if((RPM_Value - Temp_Value) > FAN_PARAMETER)
+        RPM_Value = Temp_Value;
     }
-    else
+    else if(RPM_Value < Temp_Value)
     {
-        Fan.PROTECT_EN = 1;
-    }
+       if((Temp_Value - RPM_Value) > FAN_PARAMETER)
+        RPM_Value = Temp_Value;
+    }    
+    HAL_Fan_TIM_SetCounter(0);
+  }
+  else Timer_Count++;  
 }
 
-unsigned char Fan_Get_ProtectStat(void)
-{
-    if (Fan.PROTECTED)
-        return 1;
-    else
-        return 0;
-}
-
-
-void Fan_1ms_Speed_Int(void)
-{
-    Fan.PROTECTED = 0; //wangnh
-    if (Fan.PROTECTED)
-    {
-        Fan_Set_Level(0);
-        if ((++by_3s) > 3030)
-        {
-            Fan_Set_Speed(by_Fan_Speed);
-            Fan.PROTECTED = 0;
-        }
-    }
-    else
-    {
-        Fan_Set_Level(by_Fan_Speed);
-    }
-}

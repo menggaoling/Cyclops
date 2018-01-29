@@ -175,7 +175,7 @@ void Console_Initial(void)
   ConsoleInfor.Data.Incline = 0;
   //_InforData[Info_StartIncline] = 0;
   Console_Change(Info_StartIncline,Data_Set,0);
-  ConsoleInfor.Data.ProgramMode = TM_QuickStart;//TM_Manual;
+  ConsoleInfor.Data.ProgramMode = TM_Manual;//TM_QuickStart;
   //_InforData[Info_PERCENT] = _THRPercent_DF;//w_THRPercent
   Console_Change(Info_PERCENT,Data_Set,_THRPercent_DF);
   ConsoleInfor.Data.SpeedChangDelayTime = 0;

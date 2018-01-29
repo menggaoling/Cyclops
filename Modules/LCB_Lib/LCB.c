@@ -5,12 +5,7 @@
 void LCB_Initial(void)
 {
   LCB_ERP_WakeUp();
-    /*开机初始化 Daughter Board*/
-  Digital_Command(CmdInitial,0);
-  Digital_Command(CmdSetWorkStatus,0);
-  Digital_Command(CmdSetWorkStatus,1);
-  Digital_Command(CmdGetVersion,0);
-  Digital_Command(CmdGetInclineLocation,0);
+  LCB_Get_Type();
 }
 void LCB_ERP_WakeUp(void)
 {
@@ -44,4 +39,35 @@ void LCB_ERP_WakeUp(void)
   }
   Digital_CommandBufferReset();//solve after power on error status has been clear but by_GetDkip not clear 
   Digital_CommandStart(0);// 允许自动下命令
+  
+  /*开机初始化 Daughter Board*/
+  Digital_Command(CmdInitial,0);
+  Digital_Command(CmdSetWorkStatus,0);
+  Digital_Command(CmdSetWorkStatus,1);
+  Digital_Command(CmdGetVersion,0);
+  Digital_Command(CmdGetInclineLocation,0);
+}
+
+void LCB_Get_Type(void)
+{
+  Timer_Counter_Clear(0); 
+  u8 by_QQQ=0;
+  while(by_QQQ < 10)
+  {//==>确认下控型号
+    if(Timer_Counter(T_STEP,0,20))
+    {
+      Digital_Command(CmdGetVersion,0);  
+      Timer_Counter_Clear(0); 
+      by_QQQ++;
+    }
+    if(by_QQQ > 2)
+    {//==>确认几次后还是无法确认就设为默认值
+      Digital_SetMachineType(LCB_DELTA_C3);
+      by_QQQ=100;  
+    }
+    else if(Digital_PowerON_MachineTypeCheck()==1)
+    {
+      by_QQQ=100;  
+    }
+  }
 }

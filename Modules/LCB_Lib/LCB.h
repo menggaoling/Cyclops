@@ -6,5 +6,6 @@
 
 void LCB_Initial(void);
 void LCB_ERP_WakeUp(void);
+void LCB_Get_Type(void);
 
 #endif //__LCB_H 

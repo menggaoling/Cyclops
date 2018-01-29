@@ -35,6 +35,8 @@
 #include  "RFID_GATRM310.h"
 #include "Communication.h"
 #include "Timer.h"
+#include "Treadmill.h"
+#include "Fan.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

@@ -5,19 +5,21 @@
 
 //************************************FAN***********************************
 
-#define FAN_IO_PWM_PORT             gpioPortA
-#define FAN_IO_PWM_PIN              2
-#define FAN_TIMER                   TIMER0
-#define FAN_CCP                     2
-#define FAN_TIMER_ROUTE_CCPEN       TIMER_ROUTE_CC2PEN
-#define FAM_TIMER_ROUTE_LOCATION    TIMER_ROUTE_LOCATION_LOC1
-#define FAN_IO_Sel_Low()            FAN_TIMER->ROUTE &= ~(FAN_TIMER_ROUTE_CCPEN | FAM_TIMER_ROUTE_LOCATION)
-#define FAN_IO_Sel_High()           FAN_TIMER->ROUTE |=  (FAN_TIMER_ROUTE_CCPEN | FAM_TIMER_ROUTE_LOCATION)
-#define FAN_TIMER_TOP               11764
-#define FAN_SPEED_MIN			    6000//8000
-#define FAN_SPEED_MID			    7000//9500
-#define FAN_SPEED_MAX			    10587//10943
+#define FAN_SPEED_MIN			    360//8000
+#define FAN_SPEED_MID			    1800//9500
+#define FAN_SPEED_MAX			    3600//10943
 
-void Fan_Set_Speed(unsigned char by_Dat);
+#define FAN_TIMER_TOP                       3600
+
+//Fan motor 2 pulse per turn.r/min need multiple 60.sample per 100ms excute once,need multiple 10.
+#define FAN_PARAMETER                       (10*60)/2  
+
+void Fan_Initial_Data(void);
+void Fan_Set_Level(UCHAR by_Level);
+void Fan_Set_Speed(USHORT by_Dat);
+void Fan_Inc_Level(void);
+void Fan_Dec_Level(void);
+USHORT Fan_Get_Speed(void);
+void Fan_1ms_Int(void);
 
 #endif //__FAN_H  

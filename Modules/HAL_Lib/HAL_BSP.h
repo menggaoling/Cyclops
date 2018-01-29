@@ -7,7 +7,10 @@
 
 #define TXD          0
 #define RXD          1
-#define TXC          2  //Tx complete
+
+
+#define USB_CHARGE          0
+#define USB_DATA            1
 
 #define DIGITAL_DIR_PORT	    GPIOA
 #define DIGITAL_DIR_PIN		    GPIO_Pin_1
@@ -20,6 +23,12 @@
 
 void Hal_BSP_Initial(void);
 void HAL_Set_ERP_Power(INT8 mode);
+void HAL_Set_USB_Port_Mode(INT8 mode);
+
+//Fan
+void HAL_Set_Fan_Duty( USHORT duty);
+USHORT HAL_Fan_TIM_GetCounter(void);
+void HAL_Fan_TIM_SetCounter(USHORT Counter);
 
 //digital 485
 void Hal_Set_LCB_Serial_Dir(UINT8 direction);

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Project>
+  <Desktop>
+    <Static>
+      <Debug-Log>
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1861</ColumnWidth1></Debug-Log>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>1395</ColumnWidth1><ColumnWidth2>372</ColumnWidth2><ColumnWidth3>93</ColumnWidth3></Build>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>254</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Disassembly>
+        <col-names>
+          
+          
+        <item>Disassembly</item><item>_I0</item></col-names>
+        <col-widths>
+          
+          
+        <item>500</item><item>20</item></col-widths>
+        <DisasmHistory/>
+        
+        
+      <ShowCodeCoverage>1</ShowCodeCoverage><ShowInstrProfiling>1</ShowInstrProfiling></Disassembly>
+    <Memory><FindDirection>1</FindDirection><FindAsHex>0</FindAsHex></Memory><StaticWatch><expressions><item>by_TX_Byte</item><item>TX_Buffer</item><item>Transaction_ID</item><item>Uart_TxBUff</item><item>Digital.CommandStart</item><item>by_TX</item><item>MachineType</item><item>by_Address</item><item>Workout_Status</item><item>Key_Value</item><item>Digital.CommandStart</item><item>fan_level</item><item>Uart_RxBUff</item><item>R_State</item><item>RPM_Value</item><item>Uart_Rx_Package</item><item>Uart_TxBUff</item><item>ConsoleInfor</item><item>bit.SafeKeyStatus</item><item></item></expressions><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>180</item><item>150</item><item>100</item><item>100</item></col-widths></StaticWatch><Breakpoints><col-names><item>Breakpoint</item><item>_I0</item></col-names><col-widths><item>500</item><item>35</item></col-widths></Breakpoints><CallStack><col-names><item>Frame</item><item>_I0</item></col-names><col-widths><item>400</item><item>20</item></col-widths></CallStack><Find-in-Files><ColumnWidth0>569</ColumnWidth0><ColumnWidth1>94</ColumnWidth1><ColumnWidth2>854</ColumnWidth2><ColumnWidth3>379</ColumnWidth3></Find-in-Files><Register/><WATCH_1><expressions><item>Command</item><item>crcValue</item><item>CRCResult</item><item>PackageData</item><item>513</item><item>Temp_Value</item><item></item></expressions><col-names><item>Expression</item><item>Location</item><item>Type</item><item>Value</item></col-names><col-widths><item>141</item><item>150</item><item>100</item><item>100</item></col-widths></WATCH_1></Static>
+    <Windows>
+      
+      
+      
+    <Wnd0>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-11800-12189</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
+          <Tab>
+            <Identity>TabID-11277-12198</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-261-6920</Identity><TabName>Memory</TabName><Factory>Memory</Factory><Session><ZoneNumber>0</ZoneNumber><SelectionAnchor>536850432</SelectionAnchor><SelectionEnd>536850432</SelectionEnd><UnitsPerGroup>1</UnitsPerGroup><EndianMode>0</EndianMode><DataCovEnabled>0</DataCovEnabled><DataCovShown>0</DataCovShown><AutoRefresh>0</AutoRefresh><HScroll>0</HScroll><VScroll>477</VScroll></Session></Tab><Tab><Identity>TabID-28847-6999</Identity><TabName>Breakpoints</TabName><Factory>Breakpoints</Factory></Tab><Tab><Identity>TabID-14962-7054</Identity><TabName>Call Stack</TabName><Factory>CallStack</Factory></Tab><Tab><Identity>TabID-708-23064</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-22548-12192</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>Cyclops</ExpandedNode><ExpandedNode>Cyclops/APP</ExpandedNode><ExpandedNode>Cyclops/Modules</ExpandedNode><ExpandedNode>Cyclops/Modules/FAN_Lib</ExpandedNode><ExpandedNode>Cyclops/Modules/HAL_Lib</ExpandedNode><ExpandedNode>Cyclops/Modules/LCB_Lib</ExpandedNode><ExpandedNode>Cyclops/Modules/Machine_Lib</ExpandedNode><ExpandedNode>Cyclops/Modules/STM32_Lib</ExpandedNode><ExpandedNode>Cyclops/Modules/UCB_Lib</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd1><Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-529-12195</Identity>
+            <TabName>Disassembly</TabName>
+            <Factory>Disassembly</Factory>
+            <Session/>
+          </Tab>
+        <Tab><Identity>TabID-30938-6960</Identity><TabName>Live Watch</TabName><Factory>StaticWatch</Factory></Tab><Tab><Identity>TabID-20345-367</Identity><TabName>Register</TabName><Factory>Register</Factory><Session><REG1>0</REG1><REG2>0</REG2><Group>29</Group><States>9</States><State0>TIM3_DIER</State0><State1>USART2_BRR</State1><State2>USART2_CR1</State2><State3>USART2_DR</State3><State4>USART2_SR</State4><State5>USART3_BRR</State5><State6>USART3_CR1</State6><State7>USART3_DR</State7><State8>USART3_SR</State8></Session></Tab><Tab><Identity>TabID-1655-32504</Identity><TabName>Watch 1</TabName><Factory>WATCH_1</Factory></Tab></Tabs>
+        
+      <SelectedTab>1</SelectedTab></Wnd2></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\MyeTV_Lib\TV.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>60</YPos2><SelStart2>2137</SelStart2><SelEnd2>2137</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Timer_Lib\Timer.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>42</SelStart2><SelEnd2>62</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Csafe_Lib\C_safe.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Csafe_Lib\C_safe.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>127</YPos2><SelStart2>4840</SelStart2><SelEnd2>4840</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Program_Lib\Formula.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>821</SelStart2><SelEnd2>821</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Program_Lib\Formula.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>44</SelStart2><SelEnd2>64</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\LCB_Support.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>48</YPos2><SelStart2>19778</SelStart2><SelEnd2>19778</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\LCB_Support.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>50</SelStart2><SelEnd2>71</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\LCB.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>160</SelStart2><SelEnd2>160</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\Digital.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>58</YPos2><SelStart2>4869</SelStart2><SelEnd2>4887</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\HAL_Lib\HAL_Interface.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>500</SelStart2><SelEnd2>500</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\HAL_Lib\HAL_BSP.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>4</YPos2><SelStart2>558</SelStart2><SelEnd2>558</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\LCB.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>32</YPos2><SelStart2>1637</SelStart2><SelEnd2>1637</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\HAL_Lib\HAL_BSP.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>388</YPos2><SelStart2>16030</SelStart2><SelEnd2>16030</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\STM32_Lib\stm32f10x_it.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>307</YPos2><SelStart2>9623</SelStart2><SelEnd2>9623</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\FAN_Lib\Fan.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>54</YPos2><SelStart2>1633</SelStart2><SelEnd2>1642</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\FAN_Lib\Fan.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>422</SelStart2><SelEnd2>435</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\UCB_Lib\Communication.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>224</YPos2><SelStart2>7320</SelStart2><SelEnd2>7320</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\APP\JIStypes.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>30</YPos2><SelStart2>1305</SelStart2><SelEnd2>1310</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Machine_Lib\Treadmill.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>442</YPos2><SelStart2>13883</SelStart2><SelEnd2>13900</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Timer_Lib\Timer.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>20</YPos2><SelStart2>1148</SelStart2><SelEnd2>1148</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Machine_Lib\General.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>131</YPos2><SelStart2>4407</SelStart2><SelEnd2>4407</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\APP\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>1974</YPos2><SelStart2>79456</SelStart2><SelEnd2>79456</SelEnd2></Tab><ActiveTab>22</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\LCB_Lib\Digital.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>495</YPos2><SelStart2>17557</SelStart2><SelEnd2>17557</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\APP\main.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>15</YPos2><SelStart2>827</SelStart2><SelEnd2>827</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\Modules\Machine_Lib\Treadmill.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>3</YPos2><SelStart2>804</SelStart2><SelEnd2>824</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-04DFA598><key>iaridepm.enu1</key></Toolbar-04DFA598></Sizes></Row0><Row1><Sizes><Toolbar-136C1858><key>debuggergui.enu1</key></Toolbar-136C1858></Sizes></Row1><Row2><Sizes><Toolbar-136C1920><key>armjlink.enu1</key></Toolbar-136C1920></Sizes></Row2></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>644</Bottom><Right>328</Right><x>-2</x><y>-2</y><xscreen>267</xscreen><yscreen>244</yscreen><sizeHorzCX>139063</sizeHorzCX><sizeHorzCY>244734</sizeHorzCY><sizeVertCX>171875</sizeVertCX><sizeVertCY>647944</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>644</Bottom><Right>672</Right><x>-2</x><y>-2</y><xscreen>267</xscreen><yscreen>244</yscreen><sizeHorzCX>139063</sizeHorzCX><sizeHorzCY>244734</sizeHorzCY><sizeVertCX>351042</sizeVertCX><sizeVertCY>647944</sizeVertCY></Rect></Wnd2></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>260</Bottom><Right>1922</Right><x>-2</x><y>-2</y><xscreen>1924</xscreen><yscreen>262</yscreen><sizeHorzCX>1002083</sizeHorzCX><sizeHorzCY>262788</sizeHorzCY><sizeVertCX>139063</sizeVertCX><sizeVertCY>244734</sizeVertCY></Rect></Wnd0></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Project>
+
+

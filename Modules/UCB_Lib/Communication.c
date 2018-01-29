@@ -7,6 +7,8 @@
 
 #define SYNC_WORD               0x55AA
 
+#define CMD_ACK                 0x0
+
 
 
 typedef enum
@@ -75,13 +77,13 @@ USHORT Com_Send( USHORT Command, USHORT Length, UCHAR *pData)
 {
     //IF THE UART IS BUSY, WAIT FOR IT TO BECOME IDLE
     while(!Com.TxOk);
-
+    
     if(Length < COM_MAX_DATA_LENGTH) //MAX ALLOWED DATA BYTE SIZE IS 128
     {
         USHORT current_index = 0;
         Current_Packet_Size = 0;
 
-        memset(Uart_TxBUff, 0, sizeof(Uart_TxBUff));                    //清空发送数据BUFF
+        memset(Uart_TxBUff, 0, sizeof(Uart_TxBUff));                    //Clear send BUFF
         
         //ADD PACKET HEAD, SEND SYNC BYTE 0xaa55
         Uart_TxBUff[current_index++] = ((SYNC_WORD&0xFF00)>>8);
@@ -92,12 +94,17 @@ USHORT Com_Send( USHORT Command, USHORT Length, UCHAR *pData)
         Uart_TxBUff[current_index++] = (Transaction_ID&0x00FF);
 
         //ADD THE COMMAND
-        Uart_TxBUff[current_index++] = (UCHAR)(Command >> 8);  //Message ID
-        Uart_TxBUff[current_index++] = (UCHAR)Command;         //Lingo ID
+        Uart_TxBUff[current_index++] = (UCHAR)(Command >> 8);  //Lingo ID
+        Uart_TxBUff[current_index++] = (UCHAR)CMD_ACK;         //ACK
         
-        //ADD THE LENGTH
-        Uart_TxBUff[current_index++] = (UCHAR)(Length >> 8);
-        Uart_TxBUff[current_index++] = (UCHAR)Length;
+        //ADD THE LENGTH,note that 2 bytes status and 2 bytes ACK data
+        Uart_TxBUff[current_index++] = (UCHAR)(Length + 4 >> 8);
+        Uart_TxBUff[current_index++] = (UCHAR)(Length + 4);
+        
+        
+        //Add ACK data 
+        Uart_TxBUff[current_index++] = (UCHAR)(Command & 0x00FF);
+        Uart_TxBUff[current_index++] = 0;
         
         //ADD THE DATA to BUFFER
         memcpy(&Uart_TxBUff[current_index], pData, Length);
@@ -242,7 +249,7 @@ void Com_Rx_Int(void)
 
         if(CmdFirstByteReceived == 0)
         {
-            dataLength = Uart_RxBUff[by_RxPoint - 2] + (by_Data << 8);
+            dataLength = (Uart_RxBUff[by_RxPoint - 2]<<8) + by_Data;
 
             if(dataLength >= BUFFER_SIZE)        //超过最大长度回到同步头
             {
@@ -294,10 +301,10 @@ void Com_RxProcess(USHORT PacketSize)
     //WHILE CALCULATING THE CHECKSUM, IT SHOULDNOT INCLUDE THE CRC FIELD
     if(crcValue == CRCResult) //CRC校验
     {
-        Uart_Rx_Package.TransID = Uart_RxBUff[2];
-        Uart_Rx_Package.Command = Uart_RxBUff[3] + (Uart_RxBUff[4] << 8 );
-        Uart_Rx_Package.Length  = Uart_RxBUff[5] + (Uart_RxBUff[6] << 8 );
-        memcpy(Uart_Rx_Package.Data, &Uart_RxBUff[7], Uart_Rx_Package.Length);  //copy数据
+        Uart_Rx_Package.TransID = Uart_RxBUff[2] << 8 + Uart_RxBUff[3];
+        Uart_Rx_Package.Command = Uart_RxBUff[5] + (Uart_RxBUff[4] << 8 );
+        Uart_Rx_Package.Length  = Uart_RxBUff[7] + (Uart_RxBUff[6] << 8 );
+        memcpy(Uart_Rx_Package.Data, &Uart_RxBUff[8], Uart_Rx_Package.Length);  //copy数据
         Com.RxOk = 1;
     }
 

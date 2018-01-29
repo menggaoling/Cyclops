@@ -18,23 +18,30 @@ void HAL_NVIC_Configuration(void)
 	//NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0xD000);
 	//#endif
         
-	/* Configure one bit for preemption priority */
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-            
-        /* Enable the TIM2 global Interrupt */
-        NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
-        NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  
+//	/* Configure one bit for preemption priority */
+//	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+//            
+//        /* Enable the TIM2 global Interrupt */
+//        NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+//        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+//        NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  
+//        NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//        NVIC_Init(&NVIC_InitStructure);
+        
+        /* Enable the TIM3 global Interrupt */
+        NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;
+        NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
         NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
         NVIC_Init(&NVIC_InitStructure);
         
-        /* Enable the EXTI9_5 Interrupt */
-        
-	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);		    
+//        /* Enable the EXTI9_5 Interrupt */
+//        
+//	NVIC_InitStructure.NVIC_IRQChannel = EXTI9_5_IRQn;
+//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
+//	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+//	NVIC_Init(&NVIC_InitStructure);		    
         
         /* Enable ADC IRQChannel */
         /*
@@ -62,6 +69,8 @@ void HAL_NVIC_Configuration(void)
 void HAL_GPIO_Configuration(void)
 {
 	GPIO_InitTypeDef 		GPIO_InitStructure;
+        TIM_TimeBaseInitTypeDef         TIM_TimeBaseStructure;
+        TIM_OCInitTypeDef               TIM_OCInitStructure;        
         //EXTI_InitTypeDef 		EXTI_InitStructure;	
 
         
@@ -116,7 +125,7 @@ void HAL_GPIO_Configuration(void)
             pin4 :EEPROM CS
             pin5 :EEPROM SK
             pin6 :EEPROM DO
-            pin7 :EEPROM DI
+            pin7 :Fan RPM
             pin8 :USB_CTL1 x
             pin9 :USB_CTL2 x
             pin10:USB_CTL3 x
@@ -130,32 +139,29 @@ void HAL_GPIO_Configuration(void)
                                       GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 ;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);	
-//        
-//        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOA, &GPIO_InitStructure);
-//        
+  
+        
 //        GPIO_ResetBits(GPIOA,GPIO_Pin_0);//==>没用到设LOW
-//        /* ================================================================== */
-//        /* PORT B */   
-//        /*  
-//            pin0 : USB_IAD
-//            pin1 : NC
-//            pin2 : DQ5 (Quick key)
-//            pin3 : TDO (N)
-//            pin4 : TRST (N)
-//            pin5 : Safe_Key 
-//            pin6 : VOL_CTL (PWM) TM4_CH1
-//            pin7 : HP/nLINE
-//            pin8 : HR ( Interrupt )
-//            pin9 : NC
-//            pin10: UART3_TX (N)
-//            pin11: UART3_RX (N)
-//            pin12: LED_OE
-//            pin13: LED_CLK
-//            pin14: LED_LE
-//            pin15: LED_SDI
-//        */
+        /* ================================================================== */
+        /* PORT B */   
+        /*  
+            pin0 : 
+            pin1 : 
+            pin2 : DQ5 (Quick key)
+            pin3 : TDO (N)
+            pin4 : TRST (N)
+            pin5 : Safe_Key 
+            pin6 : Fan (PWM) TM4_CH1
+            pin7 : HP/nLINE
+            pin8 : HR ( Interrupt )
+            pin9 : NC
+            pin10: UART3_TX (N)
+            pin11: UART3_RX (N)
+            pin12: LED_OE
+            pin13: LED_CLK
+            pin14: LED_LE
+            pin15: LED_SDI
+        */
 //        
 //        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14|\
 //                                       GPIO_Pin_15;
@@ -167,16 +173,52 @@ void HAL_GPIO_Configuration(void)
 //        GPIO_Init(GPIOB, &GPIO_InitStructure);
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_8;
-//        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//        GPIO_Init(GPIOB, &GPIO_InitStructure);
-//        
-//        //==>PWM
-//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-//        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-//	GPIO_Init(GPIOB, &GPIO_InitStructure); 
- 
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+        GPIO_Init(GPIOB, &GPIO_InitStructure);
         
+        //==>Fan PWM
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);         
+              
+        /* -----------------------------------------------------------------------
+        TIM4 Configuration: generate 1 PWM signals with 1 different duty cycles:
+        The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
+        clock at 24 MHz the Prescaler is computed as following:
+         - Prescaler = (TIM4CLK / TIM4 counter clock) - 1
+        SystemCoreClock is set to 72 MHz for Low-density, Medium-density, High-density
+        and Connectivity line devices and to 24 MHz for Low-Density Value line and
+        Medium-Density Value line devices
+      
+        The TIM4 is running at 6 KHz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
+                                                       = 36 MHz / 4000 = 6 KHz
+        IM3 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100 = 50%
+        ----------------------------------------------------------------------- */
+        /* Time base configuration */
+        TIM_TimeBaseStructure.TIM_Period = 3600 - 1;//0x7ce;//12000 ;
+        
+        /* Compute the prescaler value */
+        TIM_TimeBaseStructure.TIM_Prescaler = 0 ; 
+        TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1 ;
+        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+        TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+      
+        /* PWM2 Mode configuration: Channel1 */
+        TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
+        TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+        TIM_OCInitStructure.TIM_Pulse = 100-1 ;//0
+        TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+        TIM_OC1Init(TIM4, &TIM_OCInitStructure);
+        TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);
+        //
+        TIM_ARRPreloadConfig(TIM4, ENABLE);
+        /* TIM4 enable counter */
+        TIM_Cmd(TIM4, ENABLE);
+                   
+          
         /* ==================================================================*/
         /* PORT C */ 
         /*    
@@ -220,29 +262,51 @@ void HAL_GPIO_Configuration(void)
 //        /* ==================================================================*/
 //        /* PORT D */
 //        /* 
-//           pin0 : WiFi_nREADY
-//           pin1 : WiFi_nRESET
-//           pin2 : WiFi_RX (N)
-//           pin3 : WiFi_RTS
-//           pin4 : NA
+//           pin0 : 
+//           pin1 : 
+//           pin2 : 
+//           pin3 : 
+//           pin4 : USB_EN
 //           pin5 : NA
-//           pin6 : Safe_key
-//           pin7 : BEEP
-//           pin8 ~ pin15 : Key Pad Data DA1 ~ DA8 
+//           pin6 : 
+//           pin7 : 
+//           pin9 : 
+//           pin10: 
+//           pin11: 
+//           pin12: 
+//           pin13: NC
+//           pin14: NC
+//           pin15: NC
 //        */
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_8  | GPIO_Pin_9 | GPIO_Pin_10 |\
 //                                      GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14 |\
 //                                      GPIO_Pin_15;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOD, &GPIO_InitStructure);
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_3;
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 //	GPIO_Init(GPIOD, &GPIO_InitStructure);
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_4  | GPIO_Pin_5 | GPIO_Pin_7 ;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//	GPIO_Init(GPIOD, &GPIO_InitStructure);	
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOD, &GPIO_InitStructure);	
+        
+        /* Time base configuration */
+        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;
+        TIM_TimeBaseStructure.TIM_Prescaler = 18 - 1;
+        TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;   
+        TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+        
+        TIM_ETRClockMode2Config(TIM3, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 0);  
+//        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);   
+        TIM_SetCounter(TIM3, 0);    
+        TIM_Cmd(TIM3, ENABLE); 
+        
 //        
 //        // NA
 //        GPIO_SetBits(GPIOD,GPIO_Pin_4);
@@ -269,13 +333,9 @@ void HAL_GPIO_Configuration(void)
            pin14 : POWER_EN2
            pin15 : POWER_EN3 
         */
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15 |GPIO_Pin_0 |GPIO_Pin_1 |GPIO_Pin_2;
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOE, &GPIO_InitStructure);	
-        
-        GPIO_SetBits(GPIOE,GPIO_Pin_0);
-        GPIO_SetBits(GPIOE,GPIO_Pin_1);
-        GPIO_SetBits(GPIOE,GPIO_Pin_2);
+	GPIO_Init(GPIOE, &GPIO_InitStructure);	        
 
 }
 
@@ -297,7 +357,7 @@ void  HAL_Usart_Initial(void)
           #  UART 2 = Digital 
           #  UART 3 = CSAFE 
           #  UART 4 = TV/CAB 
-          #  UART 5 = GUI
+          #  UART 5 = UCB 
           ######################################################################*/     
 	USART_InitStructure.USART_BaudRate = 9600;//115200;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
@@ -346,7 +406,7 @@ void  HAL_Usart_Initial(void)
         USART_Cmd(UART4, ENABLE);	
         
         /*######################################################################
-          #  UART 5 = RF / WiFi
+          #  UART 5 = UCB communication
           ######################################################################*/  
         /*
 #ifdef  WiFi_Module
@@ -373,28 +433,28 @@ void  HAL_Usart_Initial(void)
         /* Enable the USART1 Interrupt */
         
         NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);	
         
 	/* Enable the USART2 Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);	
 
 	/* Enable the USART3 Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2;// 2014.12.11
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;// 2014.12.11
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);		
         
         /* Enable the USART4 Interrupt */
 	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;// 2014.12.11
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 4;// 2014.12.11
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);		
@@ -402,7 +462,7 @@ void  HAL_Usart_Initial(void)
         /* Enable the USART5 Interrupt */
         
 	NVIC_InitStructure.NVIC_IRQChannel = UART5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);		
@@ -434,7 +494,7 @@ void Hal_BSP_Initial(void)
   
   HAL_GPIO_Configuration();
   
-//  HAL_NVIC_Configuration();
+  HAL_NVIC_Configuration();
   
   /* Setup SysTick Timer for 1 msec interrupts  */
   SysTick_Config(SystemCoreClock / 1000);
@@ -457,18 +517,33 @@ void HAL_Set_ERP_Power(INT8 mode)
 {
   if( mode == ON)
   {
-    GPIO_SetBits(GPIOE,GPIO_Pin_13);
-    GPIO_SetBits(GPIOE,GPIO_Pin_14);
-    GPIO_SetBits(GPIOE,GPIO_Pin_15);
+    GPIO_SetBits(GPIOE,GPIO_Pin_13); //ERP Power 
+    GPIO_SetBits(GPIOE,GPIO_Pin_14);//power ERP 12v inner
+    GPIO_SetBits(GPIOE,GPIO_Pin_15);//power ERP 12v export
+    GPIO_SetBits(GPIOE,GPIO_Pin_0);//power mode pwm operation
+    GPIO_SetBits(GPIOD,GPIO_Pin_4);//usb port charge chip power
+    GPIO_SetBits(GPIOE,GPIO_Pin_3);;// usb port in data transmission mode
   }
   else if( mode == OFF)
   {
     GPIO_ResetBits(GPIOE,GPIO_Pin_13);
     GPIO_ResetBits(GPIOE,GPIO_Pin_14);
     GPIO_ResetBits(GPIOE,GPIO_Pin_15);
+    GPIO_ResetBits(GPIOD,GPIO_Pin_4);    
   }
 }
 
+void HAL_Set_USB_Port_Mode(INT8 mode)
+{
+  if( mode == USB_CHARGE)
+  {
+    GPIO_ResetBits(GPIOE,GPIO_Pin_3);// usb in charge mode
+  }
+  else if( mode == USB_DATA)
+  {
+    GPIO_SetBits(GPIOE,GPIO_Pin_3); // usb in data transmission mode
+  }
+}
 
 //Digital LCB function                         
 void Hal_Set_LCB_Serial_Dir(UINT8 direction)
@@ -523,4 +598,21 @@ void HAL_Com_TX_INT_Enable(void)
 void HAL_Com_TX_INT_Disable(void)
 {
   USART_ITConfig(UART5,USART_IT_TXE,DISABLE);//==>USART2 TX中断关闭
+}
+
+//Fan 
+USHORT HAL_Fan_TIM_GetCounter(void)
+{
+  return TIM_GetCounter(TIM3);
+}
+void HAL_Fan_TIM_SetCounter(USHORT Counter)
+{
+  TIM_SetCounter(TIM3,0);
+}
+
+void HAL_Set_Fan_Duty( USHORT duty)
+{
+  if(duty > 0)//setting value less than actual value 1
+    duty--;
+  TIM_SetCompare1(TIM4,duty);
 }

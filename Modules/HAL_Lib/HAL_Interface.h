@@ -17,10 +17,5 @@ void HW_Toggle_IO(GPIO_TypeDef *Port, UINT16 Pin);
 UCHAR HW_Get_IO(GPIO_TypeDef *Port, UINT16 Pin);
 UCHAR HW_Get_IO_Filter(GPIO_TypeDef *Port, UINT16 Pin);
 
-//*To be deleted*/
-#define Data_Set 2
-#define Data_Get  3
-#define Info_WorkoutIncline 10
-#define Info_WorkoutSpeed 9
 
 #endif //__HAL_INTERFACE_H  

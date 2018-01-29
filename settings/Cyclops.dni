@@ -1,0 +1,76 @@
+[Stack]
+FillEnabled=0
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnLogOnly=1
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
+[DebugChecksum]
+Checksum=-71550510
+[Exceptions]
+StopOnUncaught=_ 0
+StopOnThrow=_ 0
+[CodeCoverage]
+Enabled=_ 0
+[CallStack]
+ShowArgs=0
+[Disassembly]
+MixedMode=1
+[JLinkDriver]
+CStepIntDis=_ 0
+TraceBufferSize=0x00010000
+TraceStallIfFIFOFull=0x00000000
+TracePortSize=0x00000004
+[struct_types]
+Fmt0=DATA_PACKAGE-Command	4	0
+Fmt1=DATA_PACKAGE-Length	4	0
+Fmt2=DATA_PACKAGE-PacketHead	4	0
+Fmt3=DATA_PACKAGE-TransID	4	0
+[array_types]
+Fmt0=UCHAR[260]	4	0
+Fmt1=UCHAR[280]	4	0
+Fmt2=u8[20]	4	0
+[watch_formats]
+Fmt0={W}1:513	4	0
+Fmt1={W}1:CRCResult	4	0
+Fmt2={W}1:Command	4	0
+Fmt3={W}1:PackageData.Command	4	0
+Fmt4={W}1:crcValue	4	0
+Fmt5={W}42:Frequency	4	0
+Fmt6={W}42:IC2Value	4	0
+Fmt7={W}42:MachineType	4	0
+Fmt8={W}42:Pre_IC2Value	4	0
+Fmt9={W}42:Transaction_ID	4	0
+Fmt10={W}42:Workout_Status	4	0
+Fmt11={W}42:by_Address	4	0
+Fmt12={W}42:by_TX	3	0
+Fmt13={W}42:fan_level	3	0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[CallStackLog]
+Enabled=0
+[DriverProfiling]
+Enabled=0
+Mode=1
+Graph=0
+Symbiont=0
+Exclusions=
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\UCB_Lib\Communication.c}.149.9" 0 0 1 "" 0 "" 0
+Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\UCB_Lib\Communication.c}.308.9" 0 0 1 "" 0 "" 0
+Bp2=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.513.4" 0 0 1 "" 0 "" 0
+Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\APP\main.c}.907.9" 0 0 1 "" 0 "" 0
+Count=4
+[Aliases]
+Count=0
+SuppressDialog=0
