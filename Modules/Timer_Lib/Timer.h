@@ -8,7 +8,7 @@
 #define Time_AllClose 0xff
 #define Time_TotalBuffer 16
 
-#define _Time_WiFiConnectCheck   10
+#define _Time_ERP                10
 #define _Time_HJSCheck           11 //Phone Jack Sensor
 #define _Time_USBProtectionCheck 12 
 #define _Time_RSCUCheck          13 

@@ -82,34 +82,53 @@ USHORT Com_Send( USHORT Command, USHORT Length, UCHAR *pData)
     {
         USHORT current_index = 0;
         Current_Packet_Size = 0;
+        DataUnion16 Temp_Data;
 
         memset(Uart_TxBUff, 0, sizeof(Uart_TxBUff));                    //Clear send BUFF
         
         //ADD PACKET HEAD, SEND SYNC BYTE 0xaa55
-        Uart_TxBUff[current_index++] = ((SYNC_WORD&0xFF00)>>8);
-        Uart_TxBUff[current_index++] = (SYNC_WORD&0x00FF);
+        Temp_Data.data16 = SYNC_WORD;
+        Uart_TxBUff[current_index++] = Temp_Data.data8[1];
+        Uart_TxBUff[current_index++] = Temp_Data.data8[0];
 
         //ADD Transaction ID
-        Uart_TxBUff[current_index++] = ((Transaction_ID&0xFF00)>>8);        
-        Uart_TxBUff[current_index++] = (Transaction_ID&0x00FF);
+        Temp_Data.data16 = Transaction_ID;
+        Uart_TxBUff[current_index++] = Temp_Data.data8[1];      
+        Uart_TxBUff[current_index++] = Temp_Data.data8[0];
 
         //ADD THE COMMAND
-        Uart_TxBUff[current_index++] = (UCHAR)(Command >> 8);  //Lingo ID
-        Uart_TxBUff[current_index++] = (UCHAR)CMD_ACK;         //ACK
+        Temp_Data.data16 = Command;
+        Uart_TxBUff[current_index++] = Temp_Data.data8[1];  //Lingo ID
+        Uart_TxBUff[current_index++] = Temp_Data.data8[0];  //Message ID
+        if(Length <= 2)//need process ACK
+        {
+          //ADD THE LENGTH,add 2 bytes ACK
+          Temp_Data.data16 = (Length + 2);
+          Uart_TxBUff[current_index++] = Temp_Data.data8[1];
+          Uart_TxBUff[current_index++] = Temp_Data.data8[0];
+          
+          
+          //ADD THE DATA to BUFFER
+          memcpy(&Uart_TxBUff[current_index], pData, Length);
+          current_index += Length;
+          
+          //Add ACK data 
+          Uart_TxBUff[current_index++] = (UCHAR)(Command & 0x00FF);
+          Uart_TxBUff[current_index++] = 0;      
+        }
+        else
+        {
+          //ADD THE LENGTH,add 2 bytes ACK
+          Temp_Data.data16 = Length;
+          Uart_TxBUff[current_index++] = Temp_Data.data8[1];
+          Uart_TxBUff[current_index++] = Temp_Data.data8[0];
+          
+          
+          //ADD THE DATA to BUFFER
+          memcpy(&Uart_TxBUff[current_index], pData, Length);
+          current_index += Length;
+        }
         
-        //ADD THE LENGTH,note that 2 bytes status and 2 bytes ACK data
-        Uart_TxBUff[current_index++] = (UCHAR)(Length + 4 >> 8);
-        Uart_TxBUff[current_index++] = (UCHAR)(Length + 4);
-        
-        
-        //Add ACK data 
-        Uart_TxBUff[current_index++] = (UCHAR)(Command & 0x00FF);
-        Uart_TxBUff[current_index++] = 0;
-        
-        //ADD THE DATA to BUFFER
-        memcpy(&Uart_TxBUff[current_index], pData, Length);
-        current_index += Length;
-
         //CALCULATE THE CHECKSUM AND ADD IT TO THE PACKET
         USHORT checksum = Com_CRC16_Check(Uart_TxBUff, current_index);
         Uart_TxBUff[current_index++] = checksum;

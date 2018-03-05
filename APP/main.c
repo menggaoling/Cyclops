@@ -13,55 +13,78 @@ UCHAR Workout_Status = WORKOUT_RESET;
 static struct
 {
 
-    unsigned long Stop      : 1;
-    unsigned long ShowChang : 1;
-    unsigned long WarmUp    : 1;
-    unsigned long CoolDown  : 1;
-    unsigned long THR_Over  : 1;
-    unsigned long THR_Safe  : 1;
-    unsigned long WorkEnd   : 1;
-    unsigned long Enter     : 1;
-    unsigned long KeyColse  : 1;
-    unsigned long ErrorCode : 1;
-    unsigned long GO        : 1;
-    unsigned long FitTest   : 1;
-    unsigned long Pause     : 1;
-    unsigned long FirstTime : 1;
-    unsigned long FirstHR : 1;
-    unsigned long Choose    : 1;
-    unsigned long ChangProgram : 1;
-    unsigned long PowerON : 1;
-    unsigned long ShowCoolDownStart : 1;
-    unsigned long QuickStart : 1;
-    unsigned long FitTest_END : 1;
-    unsigned long SafeKeyStatus : 1;
-    unsigned long USB_SaveSummary : 1;
-    unsigned long RF900Show : 1;// 100.09.28
-    unsigned long RF900ShowStart : 1;// 100.09.28
-    unsigned long ShowInformation : 1;
-    unsigned long HR_Avg : 1;
-    unsigned long WiFi_SendSummary : 1;
-    unsigned long HRT_Based : 1;
-    unsigned long HR_Blink : 1;
-    unsigned long UseNumKey : 1;
+    UINT32 Stop      : 1;
+    UINT32 ShowChang : 1;
+    UINT32 WarmUp    : 1;
+    UINT32 CoolDown  : 1;
+    UINT32 THR_Over  : 1;
+    UINT32 THR_Safe  : 1;
+    UINT32 WorkEnd   : 1;
+    UINT32 Enter     : 1;
+    UINT32 KeyColse  : 1;
+    UINT32 ErrorCode : 1;
+    UINT32 GO        : 1;
+    UINT32 FitTest   : 1;
+    UINT32 Pause     : 1;
+    UINT32 FirstTime : 1;
+    UINT32 FirstHR : 1;
+    UINT32 Choose    : 1;
+    UINT32 ChangProgram : 1;
+    UINT32 PowerON : 1;
+    UINT32 ShowCoolDownStart : 1;
+    UINT32 QuickStart : 1;
+    UINT32 FitTest_END : 1;
+    UINT32 USB_SaveSummary : 1;
+    UINT32 RF900Show : 1;// 100.09.28
+    UINT32 RF900ShowStart : 1;// 100.09.28
+    UINT32 ShowInformation : 1;
+    UINT32 HR_Avg : 1;
+    UINT32 WiFi_SendSummary : 1;
+    UINT32 HRT_Based : 1;
+    UINT32 HR_Blink : 1;
+    UINT32 UseNumKey : 1;
     // 2014.11.24
-    unsigned long ErpMode : 1;
-    unsigned long Check : 1; 
+    UINT32 ErpMode : 1;
+    UINT32 Check : 1; 
 
 }bit;
   
-u8 by_Address=M_RESET;
-u8 by_WorkoutDFNewProgram;//==>做为运动中重新设定新Program的判断基准,暂存新设定用  
-u32 by_HoldBuffer;
+union {
+  struct {
+         UCHAR Error_Code : 1;
+         UCHAR CSafe_Status : 1;
+         UCHAR RFID_Status : 1;
+         UCHAR CSafe_Recv_Settings : 1;
+         UCHAR RFID_UID : 1; 
+         UCHAR Safety_Key : 1;
+         UCHAR Blank0 : 1;
+         UCHAR Blank1 : 1;
+         //---------------------------         
+         UCHAR Blank2 : 1;
+         UCHAR Blank3 : 1;
+         UCHAR Blank4 : 1;
+         UCHAR Blank5 : 1;
+         UCHAR Blank6 : 1;
+         UCHAR Blank7 : 1;
+         UCHAR Blank8 : 1;
+         UCHAR Blank9 : 1;   
+         // 2 Byte
+         } Data ;
+  UCHAR bytes[2] ;
+} MainStatus ;
+
+UCHAR by_Address=M_RESET;
+UCHAR by_WorkoutDFNewProgram;//==>做为运动中重新设定新Program的判断基准,暂存新设定用  
+UINT32 by_HoldBuffer;
 
 
 
 void Main_UCB_CMD_Process(void)
 {
   DATA_PACKAGE PackageData;
-  USHORT Temp_Value;
+  DataUnion16 Temp_Value;
   USHORT Index = 0;
-  PackageData.Length = 0;
+
   if(Com_GetCommand(&PackageData))
   {
     switch(PackageData.Command)
@@ -83,33 +106,41 @@ void Main_UCB_CMD_Process(void)
     case CMD_WORKOUT_START:
       if(!Digital_Get_RPMStatus())
       {//wait for belt or incline motor stop
-        Temp_Value = (PackageData.Data[0] << 8) + PackageData.Data[1];
-        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value);
+        Temp_Value.data8[0] = PackageData.Data[1];        
+        Temp_Value.data8[1] = PackageData.Data[0];
+
+        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16);
         
-        Temp_Value = (PackageData.Data[2] << 8) + PackageData.Data[3];
-        Console_Information(Info_StartIncline,Data_Set,Temp_Value);       
-        
+        Temp_Value.data8[0] = PackageData.Data[3];        
+        Temp_Value.data8[1] = PackageData.Data[2];
+        Console_Information(Info_StartIncline,Data_Set,Temp_Value.data16);       
+        PackageData.Length = 0;
         Workout_Status = WORKOUT_RUNNING;
       }
       break;
     case CMD_SET_SPEED:
       if(Workout_Status == WORKOUT_RUNNING)
       {
-        Temp_Value = (PackageData.Data[0] << 8) + PackageData.Data[1];
-        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value);
+        Temp_Value.data8[0] = PackageData.Data[1];        
+        Temp_Value.data8[1] = PackageData.Data[0];
+        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16);
+        PackageData.Length = 0;
       }
       break;
     case CMD_SET_INCLINE:
        if(Workout_Status == WORKOUT_RUNNING)
        {
-         Temp_Value = (PackageData.Data[0] << 8) + PackageData.Data[1];
-         Console_Information(Info_WorkoutIncline,Data_Set,(Temp_Value*2)/10);
+         Temp_Value.data8[0] = PackageData.Data[1];        
+         Temp_Value.data8[1] = PackageData.Data[0];
+         Console_Information(Info_WorkoutIncline,Data_Set,(Temp_Value.data16*2)/10);
+         PackageData.Length = 0;
        }
       break;
     case CMD_SET_RESISTANCE:
       break;
     case CMD_SET_KEY_VALUE:
       Key_Value = PackageData.Data[0];
+      PackageData.Length = 0;
       break;
     case CMD_GET_WORKOUT_DATA:
       if(Workout_Status == WORKOUT_RUNNING)
@@ -117,53 +148,53 @@ void Main_UCB_CMD_Process(void)
         Index = 0;
 
         //time
-        Temp_Value = Console_Parameter(Info_AccumulatedTime);//Console_Time(Data_Get,0);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = Console_Parameter(Info_AccumulatedTime);//Console_Time(Data_Get,0);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //speed
-        Temp_Value = Console_Information(Info_WorkoutSpeed,Data_Get,0);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = Console_Information(Info_WorkoutSpeed,Data_Get,0);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //incline
-        Temp_Value = Console_Information(Info_WorkoutIncline,Data_Get,0);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = Console_Information(Info_WorkoutIncline,Data_Get,0);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         
         // Average Pace
-        Temp_Value = 36000 / Console_Get_AvgSpeed();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = 36000 / Console_Get_AvgSpeed();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //Calories
-        Temp_Value = Console_Get_Calories();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = Console_Get_Calories();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //METs
-        Temp_Value = Console_Get_METs();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);        
+        Temp_Value.data16 = Console_Get_METs();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];       
         //watts
-        Temp_Value = (USHORT)((FLOAT)Console_Get_Calories_Hour() / 4.2);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = (USHORT)((FLOAT)Console_Get_Calories_Hour() / 4.2);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //Distance
-        Temp_Value = Console_Get_Distance();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);    
+        Temp_Value.data16 = Console_Get_Distance();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];   
         
         //RPM
-        Temp_Value = 0;
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);        
+        Temp_Value.data16 = 0;
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];       
         
         //Resistance Level
-        Temp_Value = 0;
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = 0;
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         
         //SPM
-        Temp_Value = 0;
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);        
+        Temp_Value.data16 = 0;
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];       
 
 //        {// Pace
 //          36000 / (Console_Information(Info_WorkoutSpeed,Data_Get,0) / 10);//(Console_Speed(Data_Get,0)
@@ -181,29 +212,29 @@ void Main_UCB_CMD_Process(void)
       {
         Index = 0;
         //time
-        Temp_Value = Console_Parameter(Info_AccumulatedTime);//Console_Time(Data_Get,0);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);        
+        Temp_Value.data16 = Console_Parameter(Info_AccumulatedTime);//Console_Time(Data_Get,0);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];       
         // Average Pace
-        Temp_Value = 36000 / Console_Get_AvgSpeed();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);     
+        Temp_Value.data16 = 36000 / Console_Get_AvgSpeed();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];   
         //Calories        
-        Temp_Value = Console_Get_Calories();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);  
+        Temp_Value.data16 = Console_Get_Calories();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0]; 
         //METs        
-        Temp_Value = Console_Get_METs();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);        
+        Temp_Value.data16 = Console_Get_METs();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];       
         //watts
-        Temp_Value = (USHORT)((FLOAT)Console_Get_Calories_Hour() / 4.2);
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF);
+        Temp_Value.data16 = (USHORT)((FLOAT)Console_Get_Calories_Hour() / 4.2);
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         //Distance
-        Temp_Value = Console_Get_Distance();
-        PackageData.Data[Index++] = ((Temp_Value&0xFF00)>>8);
-        PackageData.Data[Index++] = (Temp_Value&0x00FF); 
+        Temp_Value.data16 = Console_Get_Distance();
+        PackageData.Data[Index++] = Temp_Value.data8[1];
+        PackageData.Data[Index++] = Temp_Value.data8[0];
         
         PackageData.Length = 12;
         
@@ -219,10 +250,13 @@ void Main_UCB_CMD_Process(void)
     case CMD_SET_FAN_LEVEL:
       {
         Fan_Set_Level(PackageData.Data[0]);
+        PackageData.Length = 0;
       }
       break;
     case CMD_SET_HEARTRATE:
-      HeartRate = (PackageData.Data[0]<<8 + PackageData.Data[1]);
+      Temp_Value.data8[0] = PackageData.Data[1];        
+      Temp_Value.data8[1] = PackageData.Data[0];
+      HeartRate = Temp_Value.data16;
       PackageData.Length = 0;
       break;
     case CMD_CLEAR_RFID:
@@ -234,15 +268,17 @@ void Main_UCB_CMD_Process(void)
     case CMD_UPDATE_PACKAGE_DATA:
       break;
     case CMD_ENTER_SLEEP:
+      bit.ErpMode = TRUE;
+      Timer_Counter_Clear(_Time_ERP);
+      PackageData.Length = 0;
       break;
     default:break;
     }
     
-    PackageData.Data[PackageData.Length++] = 0;
-    if(bit.SafeKeyStatus)
-      PackageData.Data[PackageData.Length++] |= SAFETY_KEY_MASK;
-    else
-      PackageData.Data[PackageData.Length++] = 0;
+    
+
+    PackageData.Data[PackageData.Length++] = MainStatus.bytes[1];
+    PackageData.Data[PackageData.Length++] = MainStatus.bytes[0];
     
     Com_Send(PackageData.Command, PackageData.Length, PackageData.Data);
   }
@@ -256,12 +292,12 @@ void Main_UCB_CMD_Process(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-u8 Workout_LevelChange(void)
+UCHAR Workout_LevelChange(void)
 {
-  u8 by_Status = M_NONE;
-//  u8 by_Bu = Console_Information(Info_WorkoutSpeed,Data_Get,0)/10;
-//  u8 _Total;
-//  u16 by_K ;
+  UCHAR by_Status = M_NONE;
+//  UCHAR by_Bu = Console_Information(Info_WorkoutSpeed,Data_Get,0)/10;
+//  UCHAR _Total;
+//  UINT16 by_K ;
 //  
 //  bit.key = 0;
 //  Keyboard_NumberCount(3,K_BACK);
@@ -370,31 +406,31 @@ void NavyFitnessTestStart(void)
 * Output         : GPIOB Pin 12 signal
 * Return         : None
 *******************************************************************************/
-u8 Check_SafeKey(void)
+UCHAR Check_SafeKey(void)
 {
     if(Digital_CheckSafeKeyStatus())
     {//==>当取得0x02B2错误码时
         Digital_ClearSafeKeyStatus();
-        bit.SafeKeyStatus=1;
+        MainStatus.Data.Safety_Key = 1;
         by_WorkoutDFNewProgram=0;
         return 0;
     }
     if(IO_SafeKey()) 
     {//==>放开 eStop key
-        if(bit.SafeKeyStatus)
+        if(MainStatus.Data.Safety_Key)
         {//==>当第一次放开时就下三道command进行LCB初始化,解放紧急开关动作
-            bit.SafeKeyStatus=0;
+            MainStatus.Data.Safety_Key = 0;
             Digital_CommandBufferReset();//==>重置下控  
         }
         Digital_eSTOPKeyDelayClear();
     }
     else
     {//==>按下 eStop key
-        if(!bit.SafeKeyStatus)
+        if(!MainStatus.Data.Safety_Key)
         {//==>当第一次按下且未取得0x02B2错误码时
             if(Digital_eSTOPKeyDelay())
             {//==>持续 ms紧急开关成立
-                bit.SafeKeyStatus=1;
+                MainStatus.Data.Safety_Key = 1;
                 by_WorkoutDFNewProgram=0;
                 return 0;
             }
@@ -411,12 +447,12 @@ u8 Check_SafeKey(void)
 * Input          : None
 * Output         : 是否结束 Workout
 *******************************************************************************/                                            
-u8 BeltStop_StatusCheck(void)
+UCHAR BeltStop_StatusCheck(void)
 {
-//  u8 by_Status = M_NONE;
-  u8 _Out = 0;
-//  u8 _Count = 10;
-//  u8 _Mode = 0;
+//  UCHAR by_Status = M_NONE;
+  UCHAR _Out = 0;
+//  UCHAR _Count = 10;
+//  UCHAR _Mode = 0;
 //  
 //  
 //  Led_Set_Reset();
@@ -521,7 +557,7 @@ void Start_CoolDown(void)
   //Console_Incline(Data_Set,0); 
   Console_Information(Info_WorkoutIncline,Data_Set,0);
   //==> Now speed x 60%
-  by_HoldBuffer=(u32)(Console_Information(Info_WorkoutSpeed,Data_Get,0) * 60) / 100;//Console_Speed(Data_Get,0)
+  by_HoldBuffer=(UINT32)(Console_Information(Info_WorkoutSpeed,Data_Get,0) * 60) / 100;//Console_Speed(Data_Get,0)
   if(Console_SpeedUnit(Data_Get,0) == C_KM)
   {
       if(by_HoldBuffer < 80) by_HoldBuffer = 80;
@@ -560,7 +596,7 @@ void Start_CoolDown(void)
 char ErrorCodeDisplay_Mode(char by_D)
 {
   char by_S = M_NONE;
-//  u16 by_KeyInput = 0;
+//  UINT16 by_KeyInput = 0;
 //  
 //    // 耳机座保养提示
 //  if(EEPROM_ReadInformation(EE_HJS_total) >= \
@@ -587,7 +623,7 @@ char ErrorCodeDisplay_Mode(char by_D)
 //  // Keypad Bad Notification 
 //  if(EEPROM_ReadInformation(EE_KeyNotifiction) == D_Enable)
 //  {
-//      unsigned char i;
+//      UCHAR i;
 //     
 //      // Have bad key
 //      if(KeyScan_GetBypaddKeyNumber() != 0)
@@ -669,15 +705,15 @@ char ErrorCodeDisplay_Mode(char by_D)
 
 
 //==>从 Digital.c 回传资料
-extern u8 Digital_CeckNonInUser;
-extern u8 by_NonInUserTime;// 2014.02.12-1
-extern u8 by_InUserModeMotoSafeTime; // 2014.02.12-1
-extern u8 by_CheckInUserTimeNumber;//==>′ó Digital.c ??′?×êá?
+extern UCHAR Digital_CeckNonInUser;
+extern UCHAR by_NonInUserTime;// 2014.02.12-1
+extern UCHAR by_InUserModeMotoSafeTime; // 2014.02.12-1
+extern UCHAR by_CheckInUserTimeNumber;//==>′ó Digital.c ??′?×êá?
 
 
 void EEPROM_Read_Initial(void)
 {
-  u8 i;
+  UCHAR i;
  
 
 
@@ -735,21 +771,21 @@ void EEPROM_Read_Initial(void)
   
 }
 
-static u8 by_Status ;  
-static u8 by_NoHRTime;//==>做为Gerkin program心跳侦测使用累计
-static u8 by_PauseTimeShowChang;
-static u8 by_HRSum;
-static u8 by_Conversion;
-//    u8 by_FitnessENDStatus = 0;
-static u8 _EN957_HRZero ;
-static u8 _EN957_Delay;
-static u8 _ChangDFTime;
+static UCHAR by_Status ;  
+static UCHAR by_NoHRTime;//==>做为Gerkin program心跳侦测使用累计
+static UCHAR by_PauseTimeShowChang;
+static UCHAR by_HRSum;
+static UCHAR by_Conversion;
+//    UCHAR by_FitnessENDStatus = 0;
+static UCHAR _EN957_HRZero ;
+static UCHAR _EN957_Delay;
+static UCHAR _ChangDFTime;
 //
-static u8 by_HRControlTime;
-static u8 by_HRControlNumber;
-static u16 by_HRBuffer;
-static u16 by_PauseTime;
-static u16 by_KeyNumber;//==>按键代码
+static UCHAR by_HRControlTime;
+static UCHAR by_HRControlNumber;
+static UINT16 by_HRBuffer;
+static UINT16 by_PauseTime;
+static UINT16 by_KeyNumber;//==>按键代码
 
 void Main_Events_Process(void)
 {
@@ -823,7 +859,7 @@ void Main_Events_Process(void)
       by_PauseTimeShowChang = 0;
       by_HRSum = 0;
       by_Conversion = 0;
-      //    u8 by_FitnessENDStatus = 0;
+      //    UCHAR by_FitnessENDStatus = 0;
       _EN957_HRZero = 0;
       _EN957_Delay = 0;
       _ChangDFTime = 0;
@@ -1255,11 +1291,11 @@ void Main_Events_Process(void)
                         {
                             if(Console_ProgramMode(Data_Get,0) == TM_WFI)
                             {
-                                TargetHR = ((u8)((float)(208-(0.7*Console_Information(Info_AGE,Data_Get,0)))*0.85));//Console_AGE(Data_Get,0)
+                                TargetHR = ((UCHAR)((float)(208-(0.7*Console_Information(Info_AGE,Data_Get,0)))*0.85));//Console_AGE(Data_Get,0)
                             }
                             else
                             {                          
-                                TargetHR = ((u8)((float)(220-Console_Information(Info_AGE,Data_Get,0))*0.85));//Console_AGE(Data_Get,0)
+                                TargetHR = ((UCHAR)((float)(220-Console_Information(Info_AGE,Data_Get,0))*0.85));//Console_AGE(Data_Get,0)
                             }    
                             Console_MaxTime(Data_Set,by_HoldBuffer);
                             if(Console_SpeedUnit(Data_Get,0) == C_KM)
@@ -1975,6 +2011,7 @@ void Main_Data_Initial(void)
   CSAFE_Power_On();
   
   TV_Initial();
+  CAB_Initial();
 
   RFID_GATRM310_Initial();
   
@@ -1987,27 +2024,36 @@ void Main_Data_Initial(void)
   EEPROM_Read_Initial();
 }
 
-
+void Main_ERP_Process(void)
+{
+  if(bit.ErpMode == TRUE && Timer_Counter(T_STEP,_Time_ERP, 5))   //收到命令后等待500ms,留够时间让回复命令发送到UI
+  {
+    HAL_Set_ERP_Power(OFF);
+    HAL_ERP_Low_Power();
+    HAL_System_Reset();
+  }
+}
 
 int main(void)
 {
-  Hal_System_Initial();
+  HAL_System_Initial();
   Main_Data_Initial();
-//  CSAFE_EngTest();
   static UCHAR fan_level = 0;
   UCHAR Pre_level = fan_level;
   while(1)
   {
+//    CSAFE_EngTest();
 //    for(UINT i = 0;i < 800000;i++);  
 //    Com_Send(0x0201, 0, 0);    
     Main_UCB_CMD_Process();
     Main_Events_Process();
+    Main_ERP_Process();
     if(Pre_level != fan_level)
     {
       Fan_Set_Level(fan_level);
       Pre_level = fan_level;
     }
-
+    CAB_SendCommand(_CAB_VOL_DOWN);
 //    RFID_GATRM310_ReadDCF();
 //    TV_SetCommand(TVCom_LAST,0);
 //    if(CSAFE_TestStatus() == 1)

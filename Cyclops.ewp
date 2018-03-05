@@ -313,6 +313,7 @@
           <state>$PROJ_DIR$\Modules\Machine_Lib</state>
           <state>$PROJ_DIR$\Modules\Program_Lib</state>
           <state>$PROJ_DIR$\Modules\FAN_Lib</state>
+          <state>$PROJ_DIR$\Modules\CAB_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -726,7 +727,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>$PROJ_DIR$\stm32f105xC.icf</state>
+          <state>$PROJ_DIR$\Config\stm32f105xC.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -1908,6 +1909,12 @@
   <group>
     <name>Modules</name>
     <group>
+      <name>CAB_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\CAB_Lib\cab.c</name>
+      </file>
+    </group>
+    <group>
       <name>Csafe_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\Csafe_Lib\C_safe.c</name>
@@ -1925,6 +1932,9 @@
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_BSP.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_ERP.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Interface.c</name>
       </file>
     </group>
@@ -1935,9 +1945,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\Modules\LCB_Lib\LCB.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Modules\LCB_Lib\LCB_Support.c</name>
       </file>
     </group>
     <group>

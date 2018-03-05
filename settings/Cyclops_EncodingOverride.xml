@@ -6,6 +6,10 @@
     <encoding>System</encoding>
   </override>
   <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\HAL_Lib\HAL_ERP.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
     <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\HAL_Lib\HAL_Interface.c</path>
     <encoding>System</encoding>
   </override>
@@ -19,6 +23,10 @@
   </override>
   <override>
     <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\Machine_Lib\Treadmill.c</path>
+    <encoding>System</encoding>
+  </override>
+  <override>
+    <path>E:\Johnson Project\CYCLOPS\Software\Cyclops\Modules\Timer_Lib\Timer.c</path>
     <encoding>System</encoding>
   </override>
   <override>

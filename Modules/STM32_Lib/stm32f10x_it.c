@@ -159,6 +159,13 @@ void SysTick_Handler(void)
     USART_ITConfig(UART4, USART_IT_TXE, ENABLE);
   }
   
+  //CAB
+  if(CAB_CommandProcess() == 1)
+  {// Have command,TX need enable
+    USART_ITConfig(UART4, USART_IT_TXE, ENABLE);
+  }
+  
+  
   //RFID
   if(RFID_GATRM310_Process())
   {
@@ -302,6 +309,22 @@ void USART3_IRQHandler(void)
   */
 void UART4_IRQHandler(void)
 {
+//  CAB TV Function
+//  if(USART_GetITStatus(UART4, USART_IT_TXE) != RESET) 
+//  {
+//    /* Clear the CAB_UART transmit interrupt */
+//    USART_ClearITPendingBit(UART4, USART_IT_TXE);      
+//    /* Write one byte to the transmit data register */
+//    if(CAB_SendDataCheck() == 1)
+//    {// Have data
+//      USART_SendData(UART4,CAB_SendData());   
+//    }
+//    else
+//    {// Not have data
+//      USART_ITConfig(UART4, USART_IT_TXE, DISABLE);
+//    }
+//  } 
+  
   if(USART_GetITStatus(UART4, USART_IT_TXE) != RESET)
   {// TX
     USART_SendData(UART4, TV_TxBuffer());// TX‚÷ËÍBufferÙYÁÏ

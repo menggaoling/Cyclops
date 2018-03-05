@@ -888,7 +888,7 @@ void Digital_AutoReply(void)
           }
           if(TX_Buffer[by_TX][4+TX_Buffer[by_TX][3]] == Digital_CRC8((u8*)TX_Buffer[by_TX],4+TX_Buffer[by_TX][3]))
           {//==>当封包中的 CRC 码比对正确时
-           Hal_Set_LCB_Serial_Tx();
+           HAL_Set_LCB_Serial_Tx();
           }
           else
           {//==>移除 command
@@ -1070,11 +1070,11 @@ void Digital_UartTx_Int(void)
     by_TX_ConnectDelay=0;
     by_Command=TX_Buffer[by_TX][2];
     /* Disable the USART2 Transmit interrupt */
-    Hal_Set_LCB_Serial_Rx();
+    HAL_Set_LCB_Serial_Rx();
   }
   else 
   {
-    Hal_LCB_Serial_Send_Data(TX_Buffer[by_TX][by_TX_Byte]);
+    HAL_LCB_Serial_Send_Data(TX_Buffer[by_TX][by_TX_Byte]);
     by_TX_Byte++; 
   }
 }
@@ -1088,7 +1088,7 @@ void Digital_UartTx_Int(void)
 void Digital_UartRx_Int(void)
 {
   /* Read one byte from the receive data register */
-  RX_Buffer[by_RX] = Hal_LCB_Serial_Receive_Data();
+  RX_Buffer[by_RX] = HAL_LCB_Serial_Receive_Data();
   
   if(Digital.RX)
   {

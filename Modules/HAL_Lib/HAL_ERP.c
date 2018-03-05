@@ -1,4 +1,4 @@
-#include  "LCB_Support.h"
+#include "HAL_ERP.h"
 
 
 static struct
@@ -197,215 +197,74 @@ void LCB_SleepMode_Initial(void)
     lcb.LEDSwitch = 0;
     LCB_TimerCounterClear(2);
 }
-//
-//unsigned char Low_PowerMode(void)
-//{//==>进入省电模式
-//  EXTI_InitTypeDef   EXTI_InitStructure;
-//  GPIO_InitTypeDef   GPIO_InitStructure;
-//  unsigned long i=0,j=0,k=0;
-//  unsigned char SendCount = 0;
-//  unsigned short Key_State = 0;
-//  
-//  
-//  if(!lcb.LCBNoSleepMode)
-//  {
-//      Digital_Clear_ErrorCount();
-//      LowPower_State = 1;
-//      //IO_Set_Digital_CTL();//==>20111219 EUPS test
-//      //
-//      if(!lcb.Sleeping || lcb.WakeUpRetry)
-//      {
-//          GPIO_Reset(); 
-//          IO_SleepMode_LED(Bit_RESET);
-//          // PA2 Set High
-//          GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-//          GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-//          GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//          GPIO_Init(GPIOA, &GPIO_InitStructure);
-//          GPIO_SetBits(GPIOA,GPIO_Pin_2);
-//          if(!lcb.WakeUpRetry)
-//              Main_TimeDelay(2);
-//      }
-//      lcb.Sleeping = 1;
-//      lcb.LEDSwitch = 1;
-//      //
-//      if(!lcb.WakeUpRetry)
-//      {// MCU Enter STOP Mode
-//          EXTI_DeInit() ;
-//          PWR_ClearFlag(PWR_FLAG_WU);
-//          PWR_ClearFlag(PWR_FLAG_SB);
-//          //
-//          //====>> 为配合MCU省电模式设定使用,作为外部讯号触发唤醒用
-//          // 0: PA
-//          // 1: PB
-//          // 2: PC
-//          // 3: PD
-//          // 4: PE
-//          // 5: PF
-//          // 6: PG
-//          //                                   
-//          // AFIO->EXTICR[0] 0~3      >> 0x0000xxxx
-//          // AFIO->EXTICR[1] 4~7      >> 0x0000xxxx
-//          // AFIO->EXTICR[2] 8~11     >> 0x0000xxxx
-//          // AFIO->EXTICR[3] 12~15    >> 0x0000xxxx
-//          AFIO->EXTICR[2] = 0x00003333 ;
-//          AFIO->EXTICR[3] = 0x00003333 ;
-//          //
-//          // 
-//          /* Configure Key Button EXTI Line to generate an interrupt on falling edge */  
-//          EXTI_InitStructure.EXTI_Line = EXTI_Line8|EXTI_Line9|EXTI_Line10|EXTI_Line11|EXTI_Line12|EXTI_Line13|EXTI_Line14|EXTI_Line15;
-//          EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Event;
-//          EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-//          EXTI_InitStructure.EXTI_LineCmd = ENABLE ;
-//          EXTI_Init(&EXTI_InitStructure);
-//        
-//          
-//          /* Mode: SLEEP + Entry with WFE*/
-//          //__WFE();
-//          /* Mode: STOP + Regulator in ON + Entry with WFE*/
-//          PWR_EnterSTOPMode(PWR_Regulator_ON, PWR_STOPEntry_WFE);
-//          /* Request to enter STOP mode with regulator in low power mode*/
-//          //PWR_EnterSTOPMode(PWR_Regulator_ON, PWR_STOPEntry_WFE);
-//          EXTI_DeInit();
-//      }
-//      SystemInit(); // Reset Clock
-//  }
-//  //EXTI_DeInit();
-//  //SystemInit(); // Reset Clock
-//  while(1)
-//  {
-//       if(lcb.WakeUpRetry)
-//          break;
-//      if(!lcb.LCBNoSleepMode)
-//      {
-//          k += 1;
-//          Key_State = GPIO_ReadInputData(GPIOD)&0xFF00;
-//          if( Key_State != 0xFF00)
-//              j += 1;
-//          else
-//              j = 0;
-//          
-//          if(j > 200000) // 200 ms
-//              break;
-//          else if(k > 1000000) // 1 s
-//              return 0;
-//      }
-//      else
-//      {// 不支援 Sleep Mode
-//          if(Key_Proce() != K_NONE)
-//              break;
-//          else
-//              return 0;
-//      }
-//  }
-//  //
-//  
-//  // 测试用 !! 强制进入休眠
-//  //lcb.LCBNoSleepMode = 0;
-//  //
-//  
-//  
-//  if(!lcb.LCBNoSleepMode)
-//  {
-//      //EXTI_DeInit() ;
-//      // Send the low signal to wake up the LCB
-//      IO_Set_Digital_CTL()
-//      GPIO_ResetBits(GPIOA,GPIO_Pin_2);
-//
-//      for(i=0;i < 2000000;i++); // 450 ms
-//      // System Initial
-//      System_Initial(); 
-//      // Power
-//      //GPIO_SetBits(GPIOC,GPIO_Pin_14);//==>5v
-//      //GPIO_SetBits(GPIOC,GPIO_Pin_15);//==>12v
-//      //
-//      CSAFE_Initial();
-//      TV_Initial();
-//      Digital_Initial(); 
-//      Digital_CommandStart(1);// 停止自动下命令
-//      UsartInitial();
-//      for(i=0;i < 1000000;i++); // Delay 225ms
-//      
-//      SendCount = 0;
-//      //
-//      LCB_EUPs_State = 0xff;
-//      //
-//      Digital_Command(CmdEUPsMode,LCB_EUPs_Leave);
-//      //==>20111219 EUPS test
-//      LowPower_State = 0;
-//      //
-//      LCB_TimerCounterClear(2);  
-//      while(1) 
-//      {
-//          Digital_Clear_ErrorCount();
-//          //==>20111219 EUPS test
-//          if(LCB_EUPs_State == 1)  
-//          {
-//              Main_TimeDelay(1);
-//              break;
-//          }
-//          else if(LCB_TimerCounter(T_STEP,2,2) == 1)
-//          {
-//              SendCount += 1;
-//              if(SendCount >= 3)
-//              {
-//                  WakeUpRetryCount += 1;
-//                  if(WakeUpRetryCount >= 3)
-//                  {
-//                      
-//                      LED_5V_Set();
-//                      Led_Set_Target(Display_OFF,1);
-//                      lcb.LEDSwitch = 0;
-//                      while(1)
-//                          Show_Message(Message_LCBNoWakeUp,0,0,Show_Auto);
-//                      
-//                  }
-//                  else
-//                  {
-//                      
-//                      lcb.WakeUpRetry = 1;
-//                      return 0;
-//                  }
-//              }
-//              Digital_Command(CmdEUPsMode,LCB_EUPs_Leave); 
-//              LCB_TimerCounterClear(2);
-//          }
-//      }
-//      Digital_CommandStart(0);// 允许自动下命令
-//      // RFID
-//      //RFID_GATRM310_HW_Initial();
-//      //
-//  } 
-//      
-//  Main_TimeDelay(1); // Delay
-//  
-//  //lcb.Sleeping = 0;
-//  
-//  Open_UCB_PSW();  
-//  
-//  // 2015.09.11 
-//  //WiFi module initial
-//  UsartInitial_WiFi();
-//  WiFi_Information_Initial();
-//  Digital_Initial_Data_wifi();
-//  
-//  IO_Set_SK8()  //==> 当按键信息送出后，初始化脚位，避免按键信息错误
-//  IO_Set_SK1()
-//  IO_Set_SK2()
-//  IO_Set_SK3()
-//  IO_Set_SK4()
-//  IO_Set_SK5()
-//  IO_Set_SK6()
-//  IO_Set_SK7()
-//  
-//    
-//  IO_SleepMode_LED(Bit_SET);  
-//  CSAFE_Answer(Csafe_Finished);
-//  for(i=0;i < 500000;i++); // Delay 225ms
-//  lcb.Sleeping = 0;
-//  lcb.LEDSwitch = 0;
-//  return 1;   
-//}
+
+void HAL_ERP_Low_Power(void)
+{//==>进入省电模式
+  EXTI_InitTypeDef   EXTI_InitStructure;
+  
+  
+  Digital_Clear_ErrorCount();
+  
+  USART_DeInit(USART1) ;
+  USART_DeInit(USART2) ;
+  USART_DeInit(USART3) ;
+  USART_DeInit(UART4) ;
+  USART_DeInit(UART5) ;
+  
+  TIM_DeInit(TIM2);
+  TIM_DeInit(TIM3);
+  TIM_DeInit(TIM4);
+  
+  GPIO_AFIODeInit();
+  HAL_ERP_GPIO_Reset(); 
+  
+  GPIO_DeInit(GPIOA);
+  GPIO_DeInit(GPIOB);
+  GPIO_DeInit(GPIOC);
+  GPIO_DeInit(GPIOE);
+  
+  
+  // MCU Enter STOP Mode
+  EXTI_DeInit() ;
+  PWR_ClearFlag(PWR_FLAG_WU);
+  PWR_ClearFlag(PWR_FLAG_SB);
+
+  //
+  //====>> 为配合MCU省电模式设定使用,作为外部讯号触发唤醒用
+  // 0: PA
+  // 1: PB
+  // 2: PC
+  // 3: PD
+  // 4: PE
+  // 5: PF
+  // 6: PG
+  //                                   
+  // AFIO->EXTICR[0] 0~3      >> 0x0000xxxx
+  // AFIO->EXTICR[1] 4~7      >> 0x0000xxxx
+  // AFIO->EXTICR[2] 8~11     >> 0x0000xxxx
+  // AFIO->EXTICR[3] 12~15    >> 0x0000xxxx
+//  AFIO->EXTICR[2] = 0x00003333 ;
+  AFIO->EXTICR[3] = 0x00003333 ;
+  //
+  // 
+  /* Configure Key Button EXTI Line to generate an interrupt on falling edge */  
+  EXTI_InitStructure.EXTI_Line = EXTI_Line14;
+  EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Event;
+  EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE ;
+  EXTI_Init(&EXTI_InitStructure);
+  
+  
+  /* Mode: SLEEP + Entry with WFE*/
+  //__WFE();
+  /* Mode: STOP + Regulator in ON + Entry with WFE*/
+  PWR_EnterSTOPMode(PWR_Regulator_ON, PWR_STOPEntry_WFE);
+  /* Request to enter STOP mode with regulator in low power mode*/
+  //PWR_EnterSTOPMode(PWR_Regulator_ON, PWR_STOPEntry_WFE);
+  EXTI_DeInit();
+  
+  
+}
 
 unsigned char LCB_Get_LEDSwitch(void)
 {
@@ -435,77 +294,103 @@ unsigned char LCB_GetSleepModeState(void)
 {
     return lcb.SleepMode;
 }
-//
-//void GPIO_Reset(void)// Sinkyo..EUPs
-//{
-//    //====> BEEP 控制脚
-//    //=================================================================
-//    IO_Clear_BEEP() 
-//    //=================================================================
-//    //====> MBI5026 控制脚
-//    //=================================================================
-//    IO_Clear_OE() //IO_Set_OE()   
-//    IO_Clear_CLK() 
-//    IO_Clear_LE()  
-//    IO_Clear_SDI()  
-//    //=================================================================
-//    //====> Keypad按键控制脚
-//    //=================================================================
-//    IO_Clear_SK1() ;
-//    IO_Clear_SK2() ;
-//    IO_Clear_SK3() ;
-//    IO_Clear_SK4() ;
-//    IO_Clear_SK5() ;
-//    IO_Clear_SK6() ;
-//    IO_Clear_SK7() ;
-//    IO_Clear_SK8() ;
-//    //=================================================================
-//    //====> 风扇控制脚
-//    //=================================================================
-//    //IO_Clear_PAN_LSP()    
-//    //IO_Clear_PAN_MSP()  
-//    //IO_Clear_PAN_HSP()   
-//    //=================================================================
-//    //====> Voice 控制脚
-//    //=================================================================
-//    //IO_Clear_Voice1()
-//    //IO_Clear_Voice2()
-//    //IO_Clear_Voice3();  
-//    //=================================================================
-//    //====> RTC 控制脚
-//    //=================================================================
-//    IO_Clear_HT1381_SCK();   
-//    IO_Clear_HT1381_Data();  
-//    IO_Clear_HT1381_RST();      
-//    //=================================================================
-//    //====> 数字通讯 TX/RX 方向控制脚
-//    //=================================================================
-//    IO_Clear_Digital_CTL()
-//    //=================================================================
-//    //====> 外挂EEPROM控制脚
-//    //=================================================================
-//    IO_Clear_EEPROM_CS();   
-//    IO_Clear_EEPROM_SK();   
-//    IO_Clear_EEPROM_DI();  
-//    //=================================================================
-//    //====> POWER 控制脚
-//    //=================================================================
-//    LED_5V_Clear()  
-//    LED_12V_Clear()  
-//    IO_USB_ResetILIM() 
-//    //================================================================   
-//    //GPIO_ResetBits(GPIOD,GPIO_Pin_0);
-//    IO_WiFi_ResetLow();  
-//    IO_TV_Audio();// 音源
-//    IO_CloseAudio();//==>ShutDown
-//    // USB Control send Low
-//    IO_USB_ResetCTL1();
-//    IO_USB_ResetCTL2();
-//    IO_USB_ResetCTL3();
-//    IO_USB_ResetILIM();
-//    IO_USB_ResetEN();
-//    //
-//}
+
+void HAL_ERP_GPIO_Reset(void)// Sinkyo..EUPs
+{
+
+    //=================================================================
+    //====> PORT A
+    //=================================================================
+    HAL_Set_IO_OutputLow(GPIOE,GPIO_Pin_1);  //485 DIR
+    HAL_Set_IO_High(GPIOE,GPIO_Pin_2);       //485 Tx
+    HAL_Set_IO_High(GPIOE,GPIO_Pin_3); //485 Rx
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_4); //USB detect
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_5);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_6);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_7);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_8); 
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_9); //RFID TX
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_10); //RFID RX
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_11);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_12);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_13); //DEBUG 
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_14); //DEBUG 
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_15); //DEBUG 
+    //=================================================================
+    //====> PORT B
+    //=================================================================
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_0);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_1);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_2);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_3);//DEBUG 
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_4);//DEBUG 
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_5);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_6);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_7);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_8); //USB CURRRENT S0
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_9); //USB CURRRENT S1
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_10); //C_SAFE TX
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_11); //C_SAFE RX
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_12);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_13);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_14);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_15); 
+    //=================================================================
+    //====> PORT C
+    //=================================================================
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_0);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_1); //C_SAFE CTS
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_2);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_3);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_4);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_5);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_6);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_7);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_8);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_9);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_10);  //TV RX
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_11);  //TV TX
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_12);  //UCB TX
+
+    //=================================================================
+    //====> PORT D
+    //=================================================================
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_0);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_1);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_2);  //UCB RX
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_3);
+    HAL_Set_IO_Low(GPIOE,GPIO_Pin_4);        //USB EN 
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_5);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_6);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_7);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_8);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_9);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_10);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_11);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_12);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_13);
+    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_14);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_15); 
+    //=================================================================
+    //====> PORT E
+    //=================================================================
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_0);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_1);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_2);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_3);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_4);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_5);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_6);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_7);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_8);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_9);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_10);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_11);
+//    HAL_Set_IO_InputFloat(GPIOE,GPIO_Pin_12);
+    HAL_Set_IO_Low(GPIOE,GPIO_Pin_13);       //POWER_EN1
+    HAL_Set_IO_Low(GPIOE,GPIO_Pin_14);       //POWER_EN2
+    HAL_Set_IO_Low(GPIOE,GPIO_Pin_15);       //POWER_EN3
+}
 //// start v2.001-1
 //unsigned char LCB_QuickERP(unsigned char _SleepTime)
 //{

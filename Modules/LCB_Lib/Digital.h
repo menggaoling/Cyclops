@@ -1,7 +1,7 @@
 #ifndef _Digital_H_
 #define _Digital_H_
 
-#include "LCB_Support.h"
+#include "HAL_ERP.h"
 #include "HAL_Interface.h"
 #include "Treadmill.h"
 

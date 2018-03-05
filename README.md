@@ -22,3 +22,4 @@
    /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */	
 2018/1/5 Empty project build, The STM32 minimum MCU system complete with IAR 7.2.
+2018/1/29 Cyclops K1 software finished

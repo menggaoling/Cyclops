@@ -5,6 +5,7 @@
 #include "Digital.h"
 #include "C_safe.h"
 #include "TV.h"
+#include "cab.h"
 #include "RFID_GATRM310.h"
 #include "Communication.h"
 #include "Treadmill.h"

@@ -68,7 +68,7 @@ UCHAR Timer_Counter(UCHAR by_Mode,UCHAR by_Who,USHORT w_Dat)
     }
   return(b_Out);
 }
-void Timer_Delay(unsigned char delayTime)
+void Timer_Delay(UCHAR delayTime)
 {// Real Delay Time = delayTime * 0.1s 
     Timer_Counter_Clear(_Time_KeepDelay);
     while(!Timer_Counter(T_STEP,_Time_KeepDelay,delayTime));

@@ -153,8 +153,8 @@ void HAL_GPIO_Configuration(void)
             pin5 : Safe_Key 
             pin6 : Fan (PWM) TM4_CH1
             pin7 : HP/nLINE
-            pin8 : HR ( Interrupt )
-            pin9 : NC
+            pin8 : USB CURRRENT S0
+            pin9 : USB CURRRENT S1
             pin10: UART3_TX (N)
             pin11: UART3_RX (N)
             pin12: LED_OE
@@ -165,8 +165,9 @@ void HAL_GPIO_Configuration(void)
 //        
 //        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_7 | GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14|\
 //                                       GPIO_Pin_15;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);	
+        GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_8 | GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);	
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 ;
 //        GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
@@ -179,23 +180,23 @@ void HAL_GPIO_Configuration(void)
         GPIO_Init(GPIOB, &GPIO_InitStructure);
         
         //==>Fan PWM
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);         
               
         /* -----------------------------------------------------------------------
-        TIM4 Configuration: generate 1 PWM signals with 1 different duty cycles:
-        The TIM4CLK frequency is set to SystemCoreClock (Hz), to get TIM4 counter
+        TIM3 Configuration: generate 1 PWM signals with 1 different duty cycles:
+        The TIM3CLK frequency is set to SystemCoreClock (Hz), to get TIM3 counter
         clock at 24 MHz the Prescaler is computed as following:
-         - Prescaler = (TIM4CLK / TIM4 counter clock) - 1
+         - Prescaler = (TIM3CLK / TIM3 counter clock) - 1
         SystemCoreClock is set to 72 MHz for Low-density, Medium-density, High-density
         and Connectivity line devices and to 24 MHz for Low-Density Value line and
         Medium-Density Value line devices
       
-        The TIM4 is running at 6 KHz: TIM4 Frequency = TIM4 counter clock/(ARR + 1)
+        The TIM4 is running at 6 KHz: TIM3 Frequency = TIM3 counter clock/(ARR + 1)
                                                        = 36 MHz / 4000 = 6 KHz
-        IM3 Channel1 duty cycle = (TIM4_CCR1/ TIM4_ARR)* 100 = 50%
+        TM3 Channel4 duty cycle = (TIM3_CCR1/ TIM3_ARR)* 100 = 50%
         ----------------------------------------------------------------------- */
         /* Time base configuration */
         TIM_TimeBaseStructure.TIM_Period = 3600 - 1;//0x7ce;//12000 ;
@@ -204,19 +205,19 @@ void HAL_GPIO_Configuration(void)
         TIM_TimeBaseStructure.TIM_Prescaler = 0 ; 
         TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1 ;
         TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-        TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+        TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
       
-        /* PWM2 Mode configuration: Channel1 */
+        /* PWM2 Mode configuration: Channel4 */
         TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
         TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
         TIM_OCInitStructure.TIM_Pulse = 100-1 ;//0
         TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-        TIM_OC1Init(TIM4, &TIM_OCInitStructure);
-        TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Enable);
+        TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+        TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);
         //
-        TIM_ARRPreloadConfig(TIM4, ENABLE);
-        /* TIM4 enable counter */
-        TIM_Cmd(TIM4, ENABLE);
+        TIM_ARRPreloadConfig(TIM3, ENABLE);
+        /* TIM3 enable counter */
+        TIM_Cmd(TIM3, ENABLE);
                    
           
         /* ==================================================================*/
@@ -281,10 +282,10 @@ void HAL_GPIO_Configuration(void)
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6  | GPIO_Pin_8  | GPIO_Pin_9 | GPIO_Pin_10 |\
 //                                      GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14 |\
 //                                      GPIO_Pin_15;
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
-        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOD, &GPIO_InitStructure);
+//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+//        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+//	GPIO_Init(GPIOD, &GPIO_InitStructure);
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_3;
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
@@ -295,17 +296,6 @@ void HAL_GPIO_Configuration(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOD, &GPIO_InitStructure);	
         
-        /* Time base configuration */
-        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;
-        TIM_TimeBaseStructure.TIM_Prescaler = 18 - 1;
-        TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;   
-        TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
-        
-        TIM_ETRClockMode2Config(TIM3, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 0);  
-//        TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);   
-        TIM_SetCounter(TIM3, 0);    
-        TIM_Cmd(TIM3, ENABLE); 
         
 //        
 //        // NA
@@ -316,14 +306,14 @@ void HAL_GPIO_Configuration(void)
         /* ================================================================== */
         /* PORT E */
         /* 
-           pin0 : 3.3_Power
-           pin1 : +12V Power
-           pin2 : +5V Power
-           pin3 : NA
-           pin4 : USB_ILIM
-           pin5 : USB_EN
-           pin6 : USB_LOAD
-           pin7 : USB_ERR
+           pin0 : FAN RPM
+           pin1 : 
+           pin2 : 
+           pin3 : USB CTRL
+           pin4 : 
+           pin5 : Power Mode
+           pin6 : 
+           pin7 : 
            pin8 : 
            pin9 : 
            pin10: 
@@ -333,9 +323,26 @@ void HAL_GPIO_Configuration(void)
            pin14 : POWER_EN2
            pin15 : POWER_EN3 
         */
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_3 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_5 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOE, &GPIO_InitStructure);	        
+	GPIO_Init(GPIOE, &GPIO_InitStructure);	   
+        
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOE, &GPIO_InitStructure);        
+        
+        /* Time base configuration */
+        TIM_TimeBaseStructure.TIM_Period = 0xFFFF;
+        TIM_TimeBaseStructure.TIM_Prescaler = 18 - 1;
+        TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+        TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;   
+        TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
+        
+        TIM_ETRClockMode2Config(TIM4, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 0);  
+//        TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);   
+        TIM_SetCounter(TIM4, 0);    
+        TIM_Cmd(TIM4, ENABLE);         
 
 }
 
@@ -470,7 +477,7 @@ void  HAL_Usart_Initial(void)
         
 }
 
-void Hal_BSP_Initial(void)
+void HAL_BSP_Initial(void)
 {
 //  TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 //  TIM_OCInitTypeDef  TIM_OCInitStructure;
@@ -520,9 +527,8 @@ void HAL_Set_ERP_Power(INT8 mode)
     GPIO_SetBits(GPIOE,GPIO_Pin_13); //ERP Power 
     GPIO_SetBits(GPIOE,GPIO_Pin_14);//power ERP 12v inner
     GPIO_SetBits(GPIOE,GPIO_Pin_15);//power ERP 12v export
-    GPIO_SetBits(GPIOE,GPIO_Pin_0);//power mode pwm operation
-    GPIO_SetBits(GPIOD,GPIO_Pin_4);//usb port charge chip power
-    GPIO_SetBits(GPIOE,GPIO_Pin_3);;// usb port in data transmission mode
+    GPIO_SetBits(GPIOE,GPIO_Pin_5);//power mode pwm operation
+    GPIO_SetBits(GPIOD,GPIO_Pin_4);//usb port charge chip Enable pin
   }
   else if( mode == OFF)
   {
@@ -544,9 +550,36 @@ void HAL_Set_USB_Port_Mode(INT8 mode)
     GPIO_SetBits(GPIOE,GPIO_Pin_3); // usb in data transmission mode
   }
 }
+/*
+mode 0: 0.1 A
+mode 1: 0.5 A
+mode 2: 1.0 A
+mode 3: 2.1 A
+*/
+void HAL_Set_USB_Charge_Current(INT8 mode)
+{
+   if( mode&0x01 == 0)
+  {
+    GPIO_ResetBits(GPIOB,GPIO_Pin_8);
+  }
+  else
+  {
+    GPIO_SetBits(GPIOB,GPIO_Pin_8); 
+  }
+  
+  if( mode&0x02 == 0)
+  {
+    GPIO_ResetBits(GPIOB,GPIO_Pin_9);
+  }
+  else
+  {
+    GPIO_SetBits(GPIOB,GPIO_Pin_9); 
+  }
+  
+}
 
 //Digital LCB function                         
-void Hal_Set_LCB_Serial_Dir(UINT8 direction)
+void HAL_Set_LCB_Serial_Dir(UINT8 direction)
 {
   if( direction == TXD)
   {
@@ -558,25 +591,25 @@ void Hal_Set_LCB_Serial_Dir(UINT8 direction)
   }
 }
     
-void Hal_LCB_Serial_Send_Data(UINT8 data)
+void HAL_LCB_Serial_Send_Data(UINT8 data)
 {
   USART_SendData(USART2,data);
 }
 
-UINT8 Hal_LCB_Serial_Receive_Data(void)
+UINT8 HAL_LCB_Serial_Receive_Data(void)
 {
   return USART_ReceiveData(USART2);
 }
 
-void Hal_Set_LCB_Serial_Tx(void)
+void HAL_Set_LCB_Serial_Tx(void)
 {
-  Hal_Set_LCB_Serial_Dir(TXD);//==>封包设为输出
+  HAL_Set_LCB_Serial_Dir(TXD);//==>封包设为输出
   USART_ITConfig(USART2, USART_IT_TXE, ENABLE);//==>USART2中断打开
   USART_ITConfig(USART2, USART_IT_RXNE,DISABLE);//==>USART2 RX中断关闭
 }
-void Hal_Set_LCB_Serial_Rx(void)
+void HAL_Set_LCB_Serial_Rx(void)
 {
-  Hal_Set_LCB_Serial_Dir(RXD);//==>封包设为输入
+  HAL_Set_LCB_Serial_Dir(RXD);//==>封包设为输入
   USART_ITConfig(USART2,USART_IT_TXE,DISABLE);//==>USART2 TX中断关闭
   USART_ITConfig(USART2,USART_IT_RXNE,ENABLE);//==>USART2 RX中断打开
 }
@@ -603,16 +636,16 @@ void HAL_Com_TX_INT_Disable(void)
 //Fan 
 USHORT HAL_Fan_TIM_GetCounter(void)
 {
-  return TIM_GetCounter(TIM3);
+  return TIM_GetCounter(TIM4);
 }
 void HAL_Fan_TIM_SetCounter(USHORT Counter)
 {
-  TIM_SetCounter(TIM3,0);
+  TIM_SetCounter(TIM4,0);
 }
 
 void HAL_Set_Fan_Duty( USHORT duty)
 {
   if(duty > 0)//setting value less than actual value 1
     duty--;
-  TIM_SetCompare1(TIM4,duty);
+  TIM_SetCompare4(TIM3,duty);
 }

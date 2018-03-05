@@ -179,6 +179,12 @@
   <group>
     <name>Modules</name>
     <group>
+      <name>CAB_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\CAB_Lib\cab.c</name>
+      </file>
+    </group>
+    <group>
       <name>Csafe_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\Csafe_Lib\C_safe.c</name>
@@ -196,6 +202,9 @@
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_BSP.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_ERP.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Interface.c</name>
       </file>
     </group>
@@ -206,9 +215,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\Modules\LCB_Lib\LCB.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\Modules\LCB_Lib\LCB_Support.c</name>
       </file>
     </group>
     <group>

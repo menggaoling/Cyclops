@@ -1,5 +1,5 @@
-#ifndef _LCBSupport_H_
-#define _LCBSupport_H_
+#ifndef __HAL_ERP_H_
+#define __HAL_ERP_H_
 
 #include  "Digital.h"
 #include "HAL_BSP.h"
@@ -17,10 +17,10 @@ void LCB_Timer_Int(void); // 实时时间计数
 void LCB_TimerCounterClear(unsigned char by_Index);
 unsigned char LCB_TimerCounter(unsigned char by_Mode,unsigned char by_Who,unsigned short w_Dat);
 
-
+void HAL_ERP_GPIO_Reset(void);
 
 // EuPs(Sleep Mode) 
-unsigned char Low_PowerMode(void);
+void HAL_ERP_Low_Power(void);
 unsigned char LCB_Get_LowPower_State(void);
 unsigned char LCB_SleepMode(unsigned short by_SystemStatus, unsigned char by_KeyState, unsigned char by_NowStatus, unsigned short LCB_SleepTime);
 void LCB_SleepMode_Initial(void);
@@ -36,4 +36,4 @@ unsigned char LCB_QuickERP(unsigned char _SleepTime);
 
 
 
-#endif // _LCBSupport_H_
+#endif // __HAL_ERP_H_

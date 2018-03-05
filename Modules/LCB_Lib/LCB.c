@@ -16,13 +16,11 @@ void LCB_ERP_WakeUp(void)
   while(by_Enter == 0)
   {
 
-      Hal_Set_LCB_Serial_Dir(TXD);
-      HW_Set_IO_OutputLow(DIGITAL_TX_PORT,DIGITAL_TX_PIN);
+      HAL_Set_LCB_Serial_Dir(TXD);
+      HAL_Set_IO_OutputLow(DIGITAL_TX_PORT,DIGITAL_TX_PIN);
       Timer_Counter_Clear(0);
-      while(!Timer_Counter(T_STEP,0,5))
-      {
-      }
-      HW_Set_IO_AF_PP(DIGITAL_TX_PORT,DIGITAL_TX_PIN);
+      while(!Timer_Counter(T_STEP,0,5));
+      HAL_Set_IO_AF_PP(DIGITAL_TX_PORT,DIGITAL_TX_PIN);
       Digital_Initial();
       Digital_CommandStart(1);// Í£Ö¹×Ô¶¯ÏÂÃüÁî
       Digital_Command(CmdEUPsMode,0x00);
