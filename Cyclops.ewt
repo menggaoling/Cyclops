@@ -209,6 +209,12 @@
       </file>
     </group>
     <group>
+      <name>Key_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Key_Lib\Keyboard.c</name>
+      </file>
+    </group>
+    <group>
       <name>LCB_Lib</name>
       <file>
         <name>$PROJ_DIR$\Modules\LCB_Lib\Digital.c</name>

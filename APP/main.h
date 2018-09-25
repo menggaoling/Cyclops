@@ -11,6 +11,7 @@
 #include "Treadmill.h"
 #include "LCB.h"
 #include "Fan.h"
+#include "keyboard.h"
 
 
 #define WORKOUT_RESET   0xA0

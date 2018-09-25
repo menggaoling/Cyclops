@@ -143,6 +143,9 @@ void SysTick_Handler(void)
   //LCB
   Digital_AutoReply();
   
+  //Key
+  KEY_Scan_Int();
+  
   //C_Safe
   CSAFE_Counter_Int();
   if(CSAFE_TXE_Status(1)==1)

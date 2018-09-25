@@ -109,7 +109,7 @@ void Main_UCB_CMD_Process(void)
         Temp_Value.data8[0] = PackageData.Data[1];        
         Temp_Value.data8[1] = PackageData.Data[0];
 
-        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16);
+        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16*10);
         
         Temp_Value.data8[0] = PackageData.Data[3];        
         Temp_Value.data8[1] = PackageData.Data[2];
@@ -123,7 +123,7 @@ void Main_UCB_CMD_Process(void)
       {
         Temp_Value.data8[0] = PackageData.Data[1];        
         Temp_Value.data8[1] = PackageData.Data[0];
-        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16);
+        Console_Information(Info_WorkoutSpeed,Data_Set,Temp_Value.data16*10);
         PackageData.Length = 0;
       }
       break;
@@ -132,7 +132,7 @@ void Main_UCB_CMD_Process(void)
        {
          Temp_Value.data8[0] = PackageData.Data[1];        
          Temp_Value.data8[1] = PackageData.Data[0];
-         Console_Information(Info_WorkoutIncline,Data_Set,(Temp_Value.data16*2)/10);
+         Console_Information(Info_WorkoutIncline,Data_Set,Temp_Value.data16/5);//(Incline /2)*10
          PackageData.Length = 0;
        }
       break;
@@ -152,11 +152,11 @@ void Main_UCB_CMD_Process(void)
         PackageData.Data[Index++] = Temp_Value.data8[1];
         PackageData.Data[Index++] = Temp_Value.data8[0];
         //speed
-        Temp_Value.data16 = Console_Information(Info_WorkoutSpeed,Data_Get,0);
+        Temp_Value.data16 = Console_Information(Info_WorkoutSpeed,Data_Get,0)/10;
         PackageData.Data[Index++] = Temp_Value.data8[1];
         PackageData.Data[Index++] = Temp_Value.data8[0];
         //incline
-        Temp_Value.data16 = Console_Information(Info_WorkoutIncline,Data_Get,0);
+        Temp_Value.data16 = Console_Information(Info_WorkoutIncline,Data_Get,0)*5;//(Incline * 10)/2
         PackageData.Data[Index++] = Temp_Value.data8[1];
         PackageData.Data[Index++] = Temp_Value.data8[0];
         
@@ -177,7 +177,7 @@ void Main_UCB_CMD_Process(void)
         PackageData.Data[Index++] = Temp_Value.data8[1];
         PackageData.Data[Index++] = Temp_Value.data8[0];
         //Distance
-        Temp_Value.data16 = Console_Get_Distance();
+        Temp_Value.data16 = (Console_Get_Distance()/10);
         PackageData.Data[Index++] = Temp_Value.data8[1];
         PackageData.Data[Index++] = Temp_Value.data8[0];   
         
@@ -194,7 +194,8 @@ void Main_UCB_CMD_Process(void)
         //SPM
         Temp_Value.data16 = 0;
         PackageData.Data[Index++] = Temp_Value.data8[1];
-        PackageData.Data[Index++] = Temp_Value.data8[0];       
+//        PackageData.Data[Index++] = Temp_Value.data8[0];       
+        PackageData.Data[Index++] = KB_Get_Code();
 
 //        {// Pace
 //          36000 / (Console_Information(Info_WorkoutSpeed,Data_Get,0) / 10);//(Console_Speed(Data_Get,0)
@@ -272,6 +273,12 @@ void Main_UCB_CMD_Process(void)
       Timer_Counter_Clear(_Time_ERP);
       PackageData.Length = 0;
       break;
+    case CMD_GET_KEY_VALUE:
+      {
+        PackageData.Data[0] = KB_Get_Code();
+        PackageData.Length = 1;
+      }
+      break;      
     default:break;
     }
     
@@ -789,6 +796,7 @@ static UINT16 by_KeyNumber;//==>°´¼ü´úÂë
 
 void Main_Events_Process(void)
 {
+  KB_Key_Process();
 //  SAFE_KEY_OFF()    
   if(!Check_SafeKey())
   {
@@ -2022,6 +2030,8 @@ void Main_Data_Initial(void)
   Fan_Initial_Data();
   
   EEPROM_Read_Initial();
+  
+  KB_Initial();
 }
 
 void Main_ERP_Process(void)

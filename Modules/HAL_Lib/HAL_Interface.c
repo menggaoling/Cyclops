@@ -71,13 +71,13 @@ void HAL_Set_IO_AF_PP(GPIO_TypeDef *Port, UINT16 Pin)
     GPIO_Init(Port, &GPIO_InitS);
 }
 
-//可以几个PIN一起写1
+
 void HAL_Set_IO_High(GPIO_TypeDef *Port, UINT16 Pin)
 {
     GPIO_SetBits(Port, Pin);
 }
 
-//可以几个PIN一起写0
+
 void HAL_Set_IO_Low(GPIO_TypeDef *Port, UINT16 Pin)
 {
     GPIO_ResetBits(Port, Pin);

@@ -480,7 +480,7 @@ void Digital_TargetSpeed_To_DigitalCommand(void)
                          by_DigitalSpeedTarget-=10;
                          Digital_Command(CmdSetMotorCounter,by_DigitalSpeedTarget);
                          if(by_DigitalSpeedTarget <= Console_Information(Info_WorkoutSpeed,Data_Get,0))//Console_Speed(Data_Get,0)
-                         {//==>当达到目标值时就停止追击
+                         {//==>当达到目标值时就停止追击 
                              Digital.TargetSpeed=0;
                          }    
                      }

@@ -6,7 +6,7 @@ __no_init static USHORT RPM_Value;
 UCHAR Timer_Count;
 
 #define C_SPEED_NUM 3
-const USHORT w_Speed[4] = {0, FAN_SPEED_MIN, FAN_SPEED_MID, FAN_SPEED_MAX};
+const USHORT w_Speed[4] = {FAN_SPEED_MAX, FAN_SPEED_MID, FAN_SPEED_MIN, 0};
 
 
 void Fan_Initial_Data(void)
@@ -27,7 +27,7 @@ void Fan_Set_Level(UCHAR by_Level)
     }
     else
     {
-        HAL_Set_Fan_Duty(0);
+        HAL_Set_Fan_Duty(FAN_SPEED_MAX);
     }
 }
 

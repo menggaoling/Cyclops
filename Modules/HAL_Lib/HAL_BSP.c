@@ -135,7 +135,7 @@ void HAL_GPIO_Configuration(void)
             pin14:TCK/SWDIO (JTAG)
             pin15:TDI       (JTAG) 
         */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 ;//| GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_7 |\
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_11 ;//| GPIO_Pin_5 | GPIO_Pin_7 |\
                                       GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 ;
         GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);	
@@ -216,6 +216,7 @@ void HAL_GPIO_Configuration(void)
         TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);
         //
         TIM_ARRPreloadConfig(TIM3, ENABLE);
+        TIM_SetCompare4(TIM3,(3600 - 1));
         /* TIM3 enable counter */
         TIM_Cmd(TIM3, ENABLE);
                    
@@ -248,10 +249,9 @@ void HAL_GPIO_Configuration(void)
 //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 //	GPIO_Init(GPIOC, &GPIO_InitStructure);
 //        
-//        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6 |\
-//                                      GPIO_Pin_7;
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-//	GPIO_Init(GPIOC, &GPIO_InitStructure);
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_9 ;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
 //        
 //        // NA
 //        GPIO_ResetBits(GPIOC,GPIO_Pin_1);
@@ -292,7 +292,8 @@ void HAL_GPIO_Configuration(void)
 //	GPIO_Init(GPIOD, &GPIO_InitStructure);
 //        
 //        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_4  | GPIO_Pin_5 | GPIO_Pin_7 ;
-        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4| GPIO_Pin_10 |\
+                                     GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14 ;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOD, &GPIO_InitStructure);	
         

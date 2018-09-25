@@ -38,6 +38,7 @@
 #include "Timer.h"
 #include "Treadmill.h"
 #include "Fan.h"
+#include "keyboard.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

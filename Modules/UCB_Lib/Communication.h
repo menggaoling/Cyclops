@@ -30,6 +30,7 @@
 #define CMD_ENTER_SLEEP           		        0x0318
 #define CMD_SET_FAN_RPM           		        0x0319
 #define CMD_GET_FAN_RPM           		        0x0220
+#define CMD_GET_KEY_VALUE           		        0x0221
 
 
 

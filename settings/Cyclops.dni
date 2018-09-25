@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-855988878
+Checksum=-913571255
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -24,15 +24,34 @@ CStepIntDis=_ 0
 TraceBufferSize=0x00010000
 TraceStallIfFIFOFull=0x00000000
 TracePortSize=0x00000004
+[SWOTraceHWSettings]
+OverrideDefaultClocks=0
+CpuClock=72000000
+ClockAutoDetect=0
+ClockWanted=2000000
+JtagSpeed=2000000
+Prescaler=36
+TimeStampPrescIndex=0
+TimeStampPrescData=0
+PcSampCYCTAP=1
+PcSampPOSTCNT=15
+PcSampIndex=0
+DataLogMode=0
+ITMportsEnable=0
+ITMportsTermIO=0
+ITMportsLogFile=0
+ITMlogFile=$PROJ_DIR$\ITM.log
 [struct_types]
 Fmt0=DATA_PACKAGE-Command	4	0
 Fmt1=DATA_PACKAGE-Length	4	0
 Fmt2=DATA_PACKAGE-PacketHead	4	0
 Fmt3=DATA_PACKAGE-TransID	4	0
+Fmt4=DataUnion16-data16	3	0
 [array_types]
-Fmt0=UCHAR[260]	4	0
-Fmt1=UCHAR[280]	4	0
-Fmt2=u8[20]	4	0
+Fmt0=CHAR[6]	4	0
+Fmt1=UCHAR[260]	3	0
+Fmt2=UCHAR[280]	4	0
+Fmt3=u8[20]	4	0
 [watch_formats]
 Fmt0={W}1:513	4	0
 Fmt1={W}1:CRCResult	4	0
@@ -49,8 +68,47 @@ Fmt11={W}42:Transaction_ID	4	0
 Fmt12={W}42:Workout_Status	4	0
 Fmt13={W}42:by_Address	4	0
 Fmt14={W}42:by_TX	3	0
-Fmt15={W}42:by_Time100ms	3	0
-Fmt16={W}42:fan_level	3	0
+Fmt15={W}42:by_TX_Target	4	0
+Fmt16={W}42:by_Time100ms	3	0
+Fmt17={W}42:fan_level	3	0
+[SWOTraceWindow]
+PcSampling=0
+InterruptLogs=0
+ForcedTimeStamps=0
+EventCPI=0
+EventEXC=0
+EventFOLD=0
+EventLSU=0
+EventSLEEP=0
+[PowerLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=0
+Title_0=I0
+Symbol_0=0 4 1
+LiveEnabled=0
+LiveFile=PowerLogLive.log
+[DataLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+[EventLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
+[InterruptLog]
+LogEnabled=0
+SumEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+ShowTimeSum=1
+SumSortOrder=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -60,6 +118,10 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [CallStackLog]
 Enabled=0
+[PowerProbe]
+Frequency=10000
+Probe0=I0
+ProbeSetup0=2 1 1 2 0 0
 [DriverProfiling]
 Enabled=0
 Mode=1
@@ -73,8 +135,14 @@ Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\HAL_Lib\HAL_ERP.c}.390.5" 0 0 1 "" 0 ""
 Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\HAL_Lib\HAL_ERP.c}.251.3" 0 0 1 "" 0 "" 0
 Bp2=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\HAL_Lib\HAL_ERP.c}.221.3" 0 0 1 "" 0 "" 0
 Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\STM32_Lib\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.c}.224.5" 0 0 1 "" 0 "" 0
-Bp4=_ 1 "EMUL_CODE" "{$PROJ_DIR$\APP\main.c}.252.9" 0 0 1 "" 0 "" 0
-Count=5
+Bp4=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.425.4" 0 0 1 "" 0 "" 0
+Bp5=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.490.26" 0 0 1 "" 0 "" 0
+Bp6=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.384.3" 0 0 1 "" 0 "" 0
+Bp7=_ 0 "EMUL_CODE" "{$PROJ_DIR$\APP\main.c}.804.5" 0 0 1 "" 0 "" 0
+Bp8=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.480.26" 0 0 1 "" 0 "" 0
+Bp9=_ 0 "EMUL_CODE" "{$PROJ_DIR$\Modules\LCB_Lib\Digital.c}.652.18" 0 0 1 "" 0 "" 0
+Bp10=_ 0 "EMUL_CODE" "{$PROJ_DIR$\APP\main.c}.146.7" 0 0 1 "" 0 "" 0
+Count=11
 [Aliases]
 Count=0
 SuppressDialog=0

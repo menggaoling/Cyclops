@@ -314,6 +314,7 @@
           <state>$PROJ_DIR$\Modules\Program_Lib</state>
           <state>$PROJ_DIR$\Modules\FAN_Lib</state>
           <state>$PROJ_DIR$\Modules\CAB_Lib</state>
+          <state>$PROJ_DIR$\Modules\Key_Lib</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -333,7 +334,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -342,7 +343,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1936,6 +1937,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\Modules\HAL_Lib\HAL_Interface.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Key_Lib</name>
+      <file>
+        <name>$PROJ_DIR$\Modules\Key_Lib\Keyboard.c</name>
       </file>
     </group>
     <group>
